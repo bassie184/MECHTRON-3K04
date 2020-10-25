@@ -7,8 +7,12 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 
 class Ui_MainWindow(object):
+        
+    #Setting up UI
+    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(615, 375)
@@ -43,6 +47,9 @@ class Ui_MainWindow(object):
         self.Password = QtWidgets.QLineEdit(self.centralwidget)
         self.Password.setGeometry(QtCore.QRect(90, 64, 191, 20))
         self.Password.setObjectName("Password")
+        
+        
+        # Login Button
         self.Login = QtWidgets.QPushButton(self.centralwidget)
         self.Login.setGeometry(QtCore.QRect(9, 90, 75, 23))
         font = QtGui.QFont()
@@ -51,9 +58,18 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.Login.setFont(font)
         self.Login.setObjectName("Login")
+        self.Login.clicked.connect(self.login_clicked)
+        
+        #Add User Button
         self.AddUser = QtWidgets.QPushButton(self.centralwidget)
         self.AddUser.setGeometry(QtCore.QRect(90, 90, 108, 23))
         self.AddUser.setObjectName("AddUser")
+        # If Add User button clicked, will go to add_user_clicked function
+        self.AddUser.clicked.connect(self.add_user_clicked)
+            
+        #Set up dictionary
+        self.users = {}
+        
         self.LoginOutput = QtWidgets.QLabel(self.centralwidget)
         self.LoginOutput.setGeometry(QtCore.QRect(310, 90, 191, 21))
         self.LoginOutput.setObjectName("LoginOutput")
@@ -227,6 +243,42 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
+        
+    #Methods of Class
+    
+    def update(self):
+        self.label.adjustSize()
+
+    def login_clicked(self):
+        user_name = self.UserName.text()
+        password = self.Password.text()
+        #since user is existing, check whether password is correct
+        if self.users[user_name] == password:
+            self.LoginOutput.setText(self.UserName.text())
+            self.update()
+        
+    def add_user_clicked(self):
+        user_name = self.UserName.text()
+        password = self.Password.text()
+        
+        #if user is new, add to dictionary of users (if less than 10)
+        
+        if len(self.users) <= 9: 
+            self.users[user_name] = password
+            self.LoginOutput.setText(user_name)
+        else:
+            self.show_popup()
+            
+    def show_popup(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Error for Full User List")
+        msg.setText("Sorry, no additional users can be added.")
+        msg.setIcon(QMessageBox.Critical)
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.setInformativeText("Maximum number of users is 10.")
+        
+        x = msg.exec_()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -260,7 +312,8 @@ class Ui_MainWindow(object):
         self.VRPOutput.setText(_translate("MainWindow", "TextLabel"))
         self.DifferentPacemaker.setText(_translate("MainWindow", "A different Pacemaker is approached:"))
         self.DifferentPacemakerOutput.setText(_translate("MainWindow", "TextLabel"))
-
+        
+        
 
 if __name__ == "__main__":
     import sys
@@ -270,4 +323,5 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
 
