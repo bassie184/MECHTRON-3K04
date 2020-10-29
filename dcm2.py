@@ -2,6 +2,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import sys
 
+#user_name = "username"
+
 #first window to allow user to login and add user
 
 class Ui_LoginWindow(object):
@@ -119,14 +121,14 @@ class Ui_LoginWindow(object):
     
     def LoginClicked(self):
         
-        user_name = self.UserName.text()
-        password = self.Password.text()
+        self.user_name = self.UserName.text()
+        self.password = self.Password.text()
         #since user is existing, check whether password is correct
-        if user_name in self.users :
-            if self.users[user_name] == password:
+        if self.user_name in self.users :
+            if self.users[self.user_name] == self.password:
             
                 #self.LoginOutput.setText(self.UserName.text())
-            
+                
                 LoginWindow.hide()        
                 MainWindow.show()
         else:
@@ -134,11 +136,11 @@ class Ui_LoginWindow(object):
     
     def AddUserClicked(self):
         
-        user_name = self.UserName.text()
-        password = self.Password.text()
+        self.user_name = self.UserName.text()
+        self.password = self.Password.text()
         #if user is new, add to dictionary of users (if less than 10)
         if len(self.users) <= 9: 
-            self.users[user_name] = password
+            self.users[self.user_name] = self.password
             
             #self.LoginOutput.setText(user_name)
             
@@ -176,7 +178,10 @@ class Ui_LoginWindow(object):
 #Second window for editing variables and modes after login
 
 class Ui_MainWindow(object):
+   
     def setupUiTWO(self, MainWindow, LoginWindow):
+        
+        
         #main window
         
         MainWindow.setObjectName("MainWindow")
@@ -217,6 +222,9 @@ class Ui_MainWindow(object):
         self.LoginOutput.setFont(font)
         self.LoginOutput.setObjectName("LoginOutput")
         
+        #prints user name from login screen on  main window
+        
+        self.LoginOutput.setText("yolo loser")
         
         self.line_5 = QtWidgets.QFrame(self.centralwidget)
         self.line_5.setGeometry(QtCore.QRect(20, 31, 391, 20))
@@ -233,7 +241,7 @@ class Ui_MainWindow(object):
         self.Mode.setObjectName("Mode")
         
         self.DeviceCommunicate = QtWidgets.QLabel(self.centralwidget)
-        self.DeviceCommunicate.setGeometry(QtCore.QRect(20, 300, 181, 21))
+        self.DeviceCommunicate.setGeometry(QtCore.QRect(20, 320, 181, 21))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -243,7 +251,7 @@ class Ui_MainWindow(object):
         #device communication output
         
         self.DeviceCommunicateOutput = QtWidgets.QLabel(self.centralwidget)
-        self.DeviceCommunicateOutput.setGeometry(QtCore.QRect(200, 300, 71, 21))
+        self.DeviceCommunicateOutput.setGeometry(QtCore.QRect(200, 320, 71, 21))
         self.DeviceCommunicateOutput.setObjectName("DeviceCommunicateOutput")
         
         
@@ -335,6 +343,14 @@ class Ui_MainWindow(object):
         self.ARP.setFont(font)
         self.ARP.setObjectName("ARP")
         
+        self.PVART = QtWidgets.QLabel(self.centralwidget)
+        self.PVART.setGeometry(QtCore.QRect(270, 280, 111, 16))
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.PVART.setFont(font)
+        self.PVART.setObjectName("PVART")
+        
         #programmable parameters
         
         #input
@@ -363,6 +379,9 @@ class Ui_MainWindow(object):
         self.VPWInput = QtWidgets.QLineEdit(self.centralwidget)
         self.VPWInput.setGeometry(QtCore.QRect(400, 220, 113, 20))
         self.VPWInput.setObjectName("VPWInput")
+        self.PVARTInput = QtWidgets.QLineEdit(self.centralwidget)
+        self.PVARTInput.setGeometry(QtCore.QRect(400, 280, 113, 20))
+        self.PVARTInput.setObjectName("PVARTInput")
         
         #output
         
@@ -390,15 +409,18 @@ class Ui_MainWindow(object):
         self.VRPOutput = QtWidgets.QLabel(self.centralwidget)
         self.VRPOutput.setGeometry(QtCore.QRect(520, 240, 81, 16))
         self.VRPOutput.setObjectName("VRPOutput")
+        self.PVARTOutput = QtWidgets.QLabel(self.centralwidget)
+        self.PVARTOutput.setGeometry(QtCore.QRect(520, 280, 81, 16))
+        self.PVARTOutput.setObjectName("PVARTOutput")
         
         self.line_7 = QtWidgets.QFrame(self.centralwidget)
-        self.line_7.setGeometry(QtCore.QRect(250, 80, 20, 211))
+        self.line_7.setGeometry(QtCore.QRect(250, 80, 20, 231))
         self.line_7.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_7.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_7.setObjectName("line_7")
         
         self.DifferentPacemaker = QtWidgets.QLabel(self.centralwidget)
-        self.DifferentPacemaker.setGeometry(QtCore.QRect(20, 330, 221, 20))
+        self.DifferentPacemaker.setGeometry(QtCore.QRect(20, 350, 221, 20))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -408,7 +430,7 @@ class Ui_MainWindow(object):
         #different pacemaker output
         
         self.DifferentPacemakerOutput = QtWidgets.QLabel(self.centralwidget)
-        self.DifferentPacemakerOutput.setGeometry(QtCore.QRect(240, 330, 71, 21))
+        self.DifferentPacemakerOutput.setGeometry(QtCore.QRect(240, 350, 71, 21))
         self.DifferentPacemakerOutput.setObjectName("DifferentPacemakerOutput")
         
         #mode input buttons
@@ -522,7 +544,7 @@ class Ui_MainWindow(object):
         self.CurrentMode_2.setObjectName("CurrentMode_2")
         
         self.line_8 = QtWidgets.QFrame(self.centralwidget)
-        self.line_8.setGeometry(QtCore.QRect(20, 270, 591, 41))
+        self.line_8.setGeometry(QtCore.QRect(20, 290, 591, 41))
         self.line_8.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_8.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_8.setObjectName("line_8")
@@ -542,17 +564,17 @@ class Ui_MainWindow(object):
         
         
         self.line_9 = QtWidgets.QFrame(self.centralwidget)
-        self.line_9.setGeometry(QtCore.QRect(600, 80, 20, 211))
+        self.line_9.setGeometry(QtCore.QRect(600, 80, 20, 231))
         self.line_9.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_9.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_9.setObjectName("line_9")
         self.line_10 = QtWidgets.QFrame(self.centralwidget)
-        self.line_10.setGeometry(QtCore.QRect(20, 350, 321, 21))
+        self.line_10.setGeometry(QtCore.QRect(20, 370, 321, 21))
         self.line_10.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_10.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_10.setObjectName("line_10")
         self.line_11 = QtWidgets.QFrame(self.centralwidget)
-        self.line_11.setGeometry(QtCore.QRect(330, 290, 21, 71))
+        self.line_11.setGeometry(QtCore.QRect(330, 310, 21, 71))
         self.line_11.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_11.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_11.setObjectName("line_11")
@@ -583,6 +605,10 @@ class Ui_MainWindow(object):
 
         self.retranslateUiMainWindow(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
+        #shows username of current user
+        
+        self.LoginOutput.setText(LoginWindow.user_name)
         
     def retranslateUiMainWindow(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -627,6 +653,9 @@ class Ui_MainWindow(object):
         self.CurrentMode_2.setText(_translate("MainWindow", "Current Mode:"))
         self.Load.setText(_translate("MainWindow", "Load"))
         self.Current.setText(_translate("MainWindow", "Current:"))
+        self.PVART.setText(_translate("MainWindow", "PVART:"))
+        self.PVARTOutput.setText(_translate("MainWindow", ""))
+        
     
     def LogOutClicked(self):
         
@@ -686,6 +715,7 @@ class Ui_MainWindow(object):
             self.VPWOutput.setText(self.VPWInput.text())
             self.VRPOutput.setText(self.VRPInput.text())
             self.ARPOutput.setText(self.ARPInput.text())
+            self.PVARTOutput.setText(self.PVARTInput.text())
             
         #part 4? save data from each input??##################################################################
     
@@ -699,13 +729,13 @@ if __name__ == "__main__":
     LoginWindow = QtWidgets.QMainWindow()
     ui = Ui_LoginWindow()
     
-    #main window starts hiden until user logins
+    #main window starts hiden until user logs in
     MainWindow = QtWidgets.QMainWindow()
     uiTWO = Ui_MainWindow()
     
     ui.setupUi(LoginWindow, MainWindow)
     
-    uiTWO.setupUiTWO(MainWindow, LoginWindow)
+    uiTWO.setupUiTWO(MainWindow, Ui_LoginWindow)
     
     LoginWindow.show() 
     MainWindow.hide()
