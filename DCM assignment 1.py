@@ -169,13 +169,20 @@ class Ui_LoginWindow(object):
     
     #chekcs if username and password match eachother
     
-    def checkPassword(self, u1,p1):
+    def checkPassword(self, u1, p1):
         cpArray = self.getFile()
         
         for i in range (len(cpArray)):
             if (cpArray [i][0]== u1):
                 if(cpArray [i][1]==p1):
                     return 1
+        return 0
+    
+    def checkNewUser(self, username1):
+        cNUArray = self.getFile()
+        for i in range (len(cNUArray)):
+            if (cNUArray[i][0] == username1):
+                return 1
         return 0
     
     #code jumps to this function when 'Login' button is pressed
@@ -215,19 +222,22 @@ class Ui_LoginWindow(object):
         password = self.Password.text()
         
         #if user is new, adds username and password into the next row of array
-        
-        if self.UserCounter <= 10:
-            array = []
-            array.append([username, password,"","","","","","","","",""])
-            self.fileWrite(array)
-            
-            LoginWindow.hide()        
-            MainWindow.show()
-        
+        if self.checkNewUser(username) == 0:
+            if self.UserCounter <= 10:
+                array = []
+                array.append([username, password,"","","","","","","","",""])
+                self.fileWrite(array)
+                
+                LoginWindow.hide()        
+                MainWindow.show()
+                
+            else:
+                #shows error when user attemptes to add an 11th user
+                self.AddUserPopUp()
         else:
-            #shows error when user attemptes to add an 11th user
-            self.AddUserPopUp()
-    
+            #shows error when user name or password is not unique
+            self.NotUniquePopUp()
+            
     #error mesaages
     
     def LoginPopUp(self):
@@ -250,7 +260,15 @@ class Ui_LoginWindow(object):
 
         x = msg.exec_()
 
+    def NotUniquePopUp(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Error for Full User List")
+        msg.setText("Sorry, username and password already in use.")
+        msg.setIcon(QMessageBox.Critical)
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.setInformativeText("please use a unique username and password.")
 
+        x = msg.exec_()
 
 
 
