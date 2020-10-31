@@ -207,7 +207,7 @@ class Ui_LoginWindow(object):
         
         self.UserCounter += 1
         
-        #array = [["Username","Password","LRL","URL","AA","APW","VA","VPW","VRP","ARP","PVART"]]
+        #array = [["Username","Password","LRL","URL","AA","APW","VA","VPW","VRP","ARP","PVARP"]]
         
         #change screens
         
@@ -413,44 +413,88 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.ARP.setFont(font)
         self.ARP.setObjectName("ARP")
         
-        self.PVART = QtWidgets.QLabel(self.centralwidget)
-        self.PVART.setGeometry(QtCore.QRect(270, 280, 111, 16))
+        self.PVARP = QtWidgets.QLabel(self.centralwidget)
+        self.PVARP.setGeometry(QtCore.QRect(270, 280, 111, 16))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.PVART.setFont(font)
-        self.PVART.setObjectName("PVART")
+        self.PVARP.setFont(font)
+        self.PVARP.setObjectName("PVARP")
         
         #programmable parameters
-        #input
+        #input 'spinnerBox' to allow only numbers with a set range and increment
         
-        self.LRLInput = QtWidgets.QLineEdit(self.centralwidget)
-        self.LRLInput.setGeometry(QtCore.QRect(400, 120, 113, 20))
+        self.LRLInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.LRLInput.setGeometry(QtCore.QRect(420, 120, 62, 22))
+        self.LRLInput.setDecimals(0)
+        self.LRLInput.setMinimum(30.0)
+        self.LRLInput.setMaximum(175.0)
+        self.LRLInput.setProperty("value", 60.0)
         self.LRLInput.setObjectName("LRLInput")
-        self.URLInput = QtWidgets.QLineEdit(self.centralwidget)
-        self.URLInput.setGeometry(QtCore.QRect(400, 140, 113, 20))
+        self.URLInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.URLInput.setGeometry(QtCore.QRect(420, 140, 62, 22))
+        self.URLInput.setDecimals(0)
+        self.URLInput.setMinimum(50.0)
+        self.URLInput.setMaximum(175.0)
+        self.URLInput.setSingleStep(5.0)
+        self.URLInput.setProperty("value", 120.0)
         self.URLInput.setObjectName("URLInput")
-        self.APWInput = QtWidgets.QLineEdit(self.centralwidget)
-        self.APWInput.setGeometry(QtCore.QRect(400, 180, 113, 20))
-        self.APWInput.setObjectName("APWInput")
-        self.AAInput = QtWidgets.QLineEdit(self.centralwidget)
-        self.AAInput.setGeometry(QtCore.QRect(400, 160, 113, 20))
+        self.AAInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.AAInput.setGeometry(QtCore.QRect(420, 160, 62, 22))
+        self.AAInput.setDecimals(1)
+        self.AAInput.setMinimum(0.5)
+        self.AAInput.setMaximum(3.2)
+        self.AAInput.setSingleStep(0.1)
+        self.AAInput.setProperty("value", 3.2)
         self.AAInput.setObjectName("AAInput")
-        self.ARPInput = QtWidgets.QLineEdit(self.centralwidget)
-        self.ARPInput.setGeometry(QtCore.QRect(400, 260, 113, 20))
-        self.ARPInput.setObjectName("ARPInput")
-        self.VAInput = QtWidgets.QLineEdit(self.centralwidget)
-        self.VAInput.setGeometry(QtCore.QRect(400, 200, 113, 20))
+        self.APWInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.APWInput.setGeometry(QtCore.QRect(420, 180, 62, 22))
+        self.APWInput.setDecimals(1)
+        self.APWInput.setMinimum(0.0)
+        self.APWInput.setMaximum(10000.0)
+        self.APWInput.setSingleStep(0.1)
+        self.APWInput.setProperty("value", 0.4)
+        self.APWInput.setObjectName("APWInput")
+        self.VAInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.VAInput.setGeometry(QtCore.QRect(420, 200, 62, 22))
+        self.VAInput.setDecimals(1)
+        self.VAInput.setMinimum(3.5)
+        self.VAInput.setMaximum(7.0)
+        self.VAInput.setSingleStep(0.5)
+        self.VAInput.setProperty("value", 3.5)
         self.VAInput.setObjectName("VAInput")
-        self.VRPInput = QtWidgets.QLineEdit(self.centralwidget)
-        self.VRPInput.setGeometry(QtCore.QRect(400, 240, 113, 20))
-        self.VRPInput.setObjectName("VRPInput")
-        self.VPWInput = QtWidgets.QLineEdit(self.centralwidget)
-        self.VPWInput.setGeometry(QtCore.QRect(400, 220, 113, 20))
+        self.VPWInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.VPWInput.setGeometry(QtCore.QRect(420, 220, 62, 22))
+        self.VPWInput.setDecimals(1)
+        self.VPWInput.setMinimum(0.1)
+        self.VPWInput.setMaximum(1.9)
+        self.VPWInput.setSingleStep(0.1)
+        self.VPWInput.setProperty("value", 0.1)
         self.VPWInput.setObjectName("VPWInput")
-        self.PVARTInput = QtWidgets.QLineEdit(self.centralwidget)
-        self.PVARTInput.setGeometry(QtCore.QRect(400, 280, 113, 20))
-        self.PVARTInput.setObjectName("PVARTInput")
+        self.VRPInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.VRPInput.setGeometry(QtCore.QRect(420, 240, 62, 22))
+        self.VRPInput.setDecimals(0)
+        self.VRPInput.setMinimum(150.0)
+        self.VRPInput.setMaximum(500.0)
+        self.VRPInput.setSingleStep(10.0)
+        self.VRPInput.setProperty("value", 320.0)
+        self.VRPInput.setObjectName("VRPInput")
+        self.ARPInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.ARPInput.setGeometry(QtCore.QRect(420, 260, 62, 22))
+        self.ARPInput.setDecimals(0)
+        self.ARPInput.setMinimum(150.0)
+        self.ARPInput.setMaximum(500.0)
+        self.ARPInput.setSingleStep(10.0)
+        self.ARPInput.setProperty("value", 250.0)
+        self.ARPInput.setObjectName("ARPInput")
+        self.PVARPInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.PVARPInput.setGeometry(QtCore.QRect(420, 280, 62, 22))
+        self.PVARPInput.setDecimals(0)
+        self.PVARPInput.setMinimum(150.0)
+        self.PVARPInput.setMaximum(500.0)
+        self.PVARPInput.setSingleStep(10.0)
+        self.PVARPInput.setProperty("value", 250.0)
+        self.PVARPInput.setObjectName("PVARPInput")
         
         #output
         
@@ -478,9 +522,9 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.VRPOutput = QtWidgets.QLabel(self.centralwidget)
         self.VRPOutput.setGeometry(QtCore.QRect(520, 240, 81, 16))
         self.VRPOutput.setObjectName("VRPOutput")
-        self.PVARTOutput = QtWidgets.QLabel(self.centralwidget)
-        self.PVARTOutput.setGeometry(QtCore.QRect(520, 280, 81, 16))
-        self.PVARTOutput.setObjectName("PVARTOutput")
+        self.PVARPOutput = QtWidgets.QLabel(self.centralwidget)
+        self.PVARPOutput.setGeometry(QtCore.QRect(520, 280, 81, 16))
+        self.PVARPOutput.setObjectName("PVARPOutput")
         
         self.line_7 = QtWidgets.QFrame(self.centralwidget)
         self.line_7.setGeometry(QtCore.QRect(250, 80, 20, 231))
@@ -743,8 +787,8 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.CurrentMode_2.setText(_translate("MainWindow", "Current Mode:"))
         self.Load.setText(_translate("MainWindow", "Load"))
         self.Current.setText(_translate("MainWindow", "Current:"))
-        self.PVART.setText(_translate("MainWindow", "PVART:"))
-        self.PVARTOutput.setText(_translate("MainWindow", ""))
+        self.PVARP.setText(_translate("MainWindow", "PVARP:"))
+        self.PVARPOutput.setText(_translate("MainWindow", ""))
         self.leave.setText(_translate("MainWindow", "leave"))
     
     #updates ModeOutput box to say the code of each button when clicked
@@ -880,7 +924,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.VPWOutput.setText(self.VPWInput.text())
         self.VRPOutput.setText(self.VRPInput.text())
         self.ARPOutput.setText(self.ARPInput.text())
-        self.PVARTOutput.setText(self.PVARTInput.text())
+        self.PVARPOutput.setText(self.PVARPInput.text())
         
         lrl = self.LRLInput.text()
         url = self.URLInput.text()
@@ -890,7 +934,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         vpw = self.VPWInput.text()
         vrp = self.VRPInput.text()
         arp = self.ARPInput.text()
-        pvart = self.PVARTInput.text()
+        pvarp = self.PVARPInput.text()
         
         array = self.getFile()
         
@@ -911,7 +955,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         array[passLoca][7] = vpw
         array[passLoca][8] = vrp
         array[passLoca][9] = arp
-        array[passLoca][10] = pvart
+        array[passLoca][10] = pvarp
         #array[passLoca][11] = "\n"
         
         self.fileWrite(array)
