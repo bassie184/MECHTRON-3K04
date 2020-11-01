@@ -178,6 +178,8 @@ class Ui_LoginWindow(object):
                     return 1
         return 0
     
+    #checks if username and password already exist, i.e. not unique
+    
     def CheckNewUser(self, username):
         Array = self.GetFile()
         for i in range (len(Array)):
