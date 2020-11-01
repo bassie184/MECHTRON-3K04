@@ -130,7 +130,7 @@ class Ui_LoginWindow(object):
     
     #rewrites array with added users into the textfile
     
-    def fileWrite(self, w):
+    def FileWrite(self, w):
         f = open("guru.txt", "a+")
         for i in range (len(w)):
             for j in range(len(w[i])):
@@ -140,9 +140,9 @@ class Ui_LoginWindow(object):
     
     #reads from textfile and outputs file into an array so we can edit values
     
-    def getFile(self):
+    def GetFile(self):
         f=open("guru.txt", "r")
-        getArray = [["","","","","","","","","","",""],
+        GetArrray = [["","","","","","","","","","",""],
                     ["","","","","","","","","","",""],
                     ["","","","","","","","","","",""],
                     ["","","","","","","","","","",""],
@@ -154,58 +154,51 @@ class Ui_LoginWindow(object):
                     ["","","","","","","","","","",""],
                     ["","","","","","","","","","",""]]
 
-        for i in range (len(getArray)):
+        for i in range (len(GetArrray)):
             read = f.readline()
-            getArray[i] = read.split (" ")
+            GetArrray[i] = read.split (" ")
     
-        for i in range (len(getArray)):
-            for j in range (len(getArray[i])):
-                getArray[i][j] =  getArray[i][j].strip("\n")
+        for i in range (len(GetArrray)):
+            for j in range (len(GetArrray[i])):
+                GetArrray[i][j] =  GetArrray[i][j].strip("\n")
     
-        #for i in range (len(getArray)):
-         #   getArray[i].remove("")
+        #for i in range (len(GetArrray)):
+         #   GetArrray[i].remove("")
         f.close()  
-        return getArray
+        return GetArrray
     
     #chekcs if username and password match eachother
     
-    def checkPassword(self, u1, p1):
-        cpArray = self.getFile()
+    def CheckPassword(self, u1, p1):
+        Array = self.GetFile()
         
-        for i in range (len(cpArray)):
-            if (cpArray [i][0]== u1):
-                if(cpArray [i][1]==p1):
+        for i in range (len(Array)):
+            if (Array [i][0]== u1):
+                if(Array [i][1]==p1):
                     return 1
         return 0
     
-    def checkNewUser(self, username1):
-        cNUArray = self.getFile()
-        for i in range (len(cNUArray)):
-            if (cNUArray[i][0] == username1):
+    def CheckNewUser(self, username):
+        Array = self.GetFile()
+        for i in range (len(Array)):
+            if (Array[i][0] == username):
                 return 1
         return 0
     
     #code jumps to this function when 'Login' button is pressed
     
     def LoginClicked(self):
-        
         #gets username and password
-        
         username = self.UserName.text()
         password = self.Password.text()
-        
         #since user is existing, check whether password is correct
-        
-        if self.checkPassword(username, password):
-            
+        if self.CheckPassword(username, password):
             #change screens
-            
             LoginWindow.hide()        
             MainWindow.show()
             
         else:
             #password is wrong so show error message
-            
             self.LoginPopUp()
     
     #code jumps to this function when 'AddUser' button is pressed
@@ -213,24 +206,22 @@ class Ui_LoginWindow(object):
     def AddUserClicked(self):
         
         self.UserCounter += 1
-        
-        #array = [["Username","Password","LRL","URL","AA","APW","VA","VPW","VRP","ARP","PVARP"]]
-        
+        #Array = [["Username","Password","LRL","URL","AA","APW","VA","VPW","VRP","ARP","PVARP"]]
         #change screens
-        
         username = self.UserName.text()
         password = self.Password.text()
         
         #if user is new, adds username and password into the next row of array
-        if self.checkNewUser(username) == 0:
+        if self.CheckNewUser(username) == 0:
             if self.UserCounter <= 10:
-                array = []
-                array.append([username, password,"","","","","","","","",""])
-                self.fileWrite(array)
-                
+                #add username and password into array
+                Array = []
+                Array.append([username, password,"","","","","","","","",""])
+                #save array into file
+                self.FileWrite(Array)
+                #change screens
                 LoginWindow.hide()        
                 MainWindow.show()
-                
             else:
                 #shows error when user attemptes to add an 11th user
                 self.AddUserPopUp()
@@ -665,16 +656,16 @@ class Ui_MainWindow(Ui_LoginWindow):
         
         self.VVIA.clicked.connect(self.VVIAClicked)
         
-        #leave button switches pages to login menu & logs off user
+        #Leave button switches pages to login menu & logs off user
         
-        self.leave = QtWidgets.QPushButton(self.centralwidget)
-        self.leave.setGeometry(QtCore.QRect(450, 50, 75, 23))
+        self.Leave = QtWidgets.QPushButton(self.centralwidget)
+        self.Leave.setGeometry(QtCore.QRect(450, 50, 75, 23))
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.leave.setFont(font)
-        self.leave.setObjectName("Leave")
+        self.Leave.setFont(font)
+        self.Leave.setObjectName("Leave")
         
-        self.leave.clicked.connect(self.leaveClicked)
+        self.Leave.clicked.connect(self.LeaveClicked)
         
         self.CurrentMode_2 = QtWidgets.QLabel(self.centralwidget)
         self.CurrentMode_2.setGeometry(QtCore.QRect(20, 250, 81, 16))
@@ -807,7 +798,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.Current.setText(_translate("MainWindow", "Current:"))
         self.PVARP.setText(_translate("MainWindow", "PVARP:"))
         self.PVARPOutput.setText(_translate("MainWindow", ""))
-        self.leave.setText(_translate("MainWindow", "leave"))
+        self.Leave.setText(_translate("MainWindow", "Leave"))
     
     #updates ModeOutput box to say the code of each button when clicked
     
@@ -857,13 +848,15 @@ class Ui_MainWindow(Ui_LoginWindow):
     
     #logs of and switches pages
     
-    def leaveClicked(self):
+    def LeaveClicked(self):
         MainWindow.hide()
         LoginWindow.show()
     
-    def getFile(self):
+    #reads file and saves locally in array form
+    
+    def GetFile(self):
         f=open("guru.txt", "r")
-        getArray = [["","","","","","","","","","",""],
+        GetArrray = [["","","","","","","","","","",""],
                     ["","","","","","","","","","",""],
                     ["","","","","","","","","","",""],
                     ["","","","","","","","","","",""],
@@ -875,64 +868,78 @@ class Ui_MainWindow(Ui_LoginWindow):
                     ["","","","","","","","","","",""],
                     ["","","","","","","","","","",""]]
 
-        for i in range (len(getArray)):
+        for i in range (len(GetArrray)):
             read = f.readline()
-            getArray[i] = read.split (" ")
+            GetArrray[i] = read.split (" ")
     
-        for i in range (len(getArray)):
-            for j in range (len(getArray[i])):
-                getArray[i][j] =  getArray[i][j].strip("\n")
+        for i in range (len(GetArrray)):
+            for j in range (len(GetArrray[i])):
+                GetArrray[i][j] =  GetArrray[i][j].strip("\n")
     
-        #for i in range (len(getArray)):
-         #   getArray[i].remove("")
+        #for i in range (len(GetArrray)):
+         #   GetArrray[i].remove("")
         f.close()
-        return getArray
-        
-    def passwordLocation(self, plPass):
-        plArray = self.getFile()    
-        for i in range (len(plArray)):
-            for j in range (len(plArray[i])):
-                if (plArray [i][j]== plPass):
+        return GetArrray
+    
+    #returns location of password for signed in user
+    
+    def PasswordLocation(self, Password):
+        Array = self.GetFile()    
+        for i in range (len(Array)):
+            for j in range (len(Array[i])):
+                if (Array [i][j]== Password):
                     print(i)
                     return i
     
-    def getPassword(self):
+    #returns password
+    
+    def GetPassword(self):
         password = self.PasswordLoad.text()
         return password
-
-    def getUsername(self):
+    
+    # returns username
+    
+    def GetUsername(self):
         username = self.UsernameLoad.text()
         return username
     
-    def checkPassword(self,u1,p1):
-        cpArray = self.getFile()
+    #checks if password and username are valid
+    
+    def CheckPassword(self,u1,p1):
+        Array = self.GetFile()
         
-        for i in range (len(cpArray)):
-            for j in range (len(cpArray[i])):
-                if (cpArray [i][j]== u1):
-                    if(cpArray [i][j+1]==p1):
+        for i in range (len(Array)):
+            for j in range (len(Array[i])):
+                if (Array [i][j]== u1):
+                    if(Array [i][j+1]==p1):
                         return 1
-        
         return 0
     
-    def checkEmpty(self,w):
+    #returns row number of first empty row
+    
+    def CheckEmpty(self, Array):
         
-        for i in range (len(w)):
-            if w[i][0] == "":
+        for i in range (len(Array)):
+            if Array[i][0] == "":
                 return i
     
-    def fileWrite(self, w):
+    #rewrites array back into file
+    
+    def FileWrite(self, Array):
         f = open("guru.txt", "w")
         
-        emptyRow = self.checkEmpty(w)
+        EmptyRow = self.CheckEmpty(Array)
         
-        for i in range (emptyRow):
-            for j in range(len(w)):
-                f.write (w[i][j] + " ")
+        for i in range (EmptyRow):
+            for j in range(len(Array)):
+                f.write (Array[i][j] + " ")
             f.write ("\n")
         
         f.close()
-        
+    
+    #code jumps here when user clicks load
+    #checks if username and passwrd is right and then saves parameters into file
+    
     def LoadClicked(self):
         self.LRLOutput.setText(self.LRLInput.text())
         self.URLOutput.setText(self.URLInput.text())
@@ -954,29 +961,35 @@ class Ui_MainWindow(Ui_LoginWindow):
         arp = self.ARPInput.text()
         pvarp = self.PVARPInput.text()
         
-        array = self.getFile()
+        Array = self.GetFile()
         
-        userPassword = self.getPassword()
-        userUserName = self.getUsername()
-        if (self.checkPassword(userUserName,userPassword) == 0):
+        UserPassword = self.GetPassword()
+        UserUsername = self.GetUsername()
+        
+        #checks that password and username are valid
+        if (self.CheckPassword(UserUsername,UserPassword) == 0):
             self.DataWrongPopUp()
             return
         self.DataSavedPopUp()
         
-        passLoca = self.passwordLocation(userPassword)
+        PassLocation = self.PasswordLocation(UserPassword)
         
-        array[passLoca][2] = lrl
-        array[passLoca][3] = url
-        array[passLoca][4] = aa
-        array[passLoca][5] = apw
-        array[passLoca][6] = va
-        array[passLoca][7] = vpw
-        array[passLoca][8] = vrp
-        array[passLoca][9] = arp
-        array[passLoca][10] = pvarp
-        #array[passLoca][11] = "\n"
+        #we edit array to add the new parameters on the same line as password in array
+        Array[PassLocation][2] = lrl
+        Array[PassLocation][3] = url
+        Array[PassLocation][4] = aa
+        Array[PassLocation][5] = apw
+        Array[PassLocation][6] = va
+        Array[PassLocation][7] = vpw
+        Array[PassLocation][8] = vrp
+        Array[PassLocation][9] = arp
+        Array[PassLocation][10] = pvarp
+        #Array[PassLocation][11] = "\n"
         
-        self.fileWrite(array)
+        #write everything back into file
+        self.FileWrite(Array)
+    
+    #error message when wrong password or username are entered
     
     def DataWrongPopUp(self):
         msg = QMessageBox()
@@ -987,7 +1000,9 @@ class Ui_MainWindow(Ui_LoginWindow):
         msg.setInformativeText("Please Enter Valid User Info.")
 
         x = msg.exec_()
-        
+    
+    #message when password and username are right, and data saved in file
+    
     def DataSavedPopUp(self):
         msg = QMessageBox()
         msg.setWindowTitle("WELCOME")
@@ -997,6 +1012,8 @@ class Ui_MainWindow(Ui_LoginWindow):
         msg.setInformativeText("file location 'guru.txt'.")
 
         x = msg.exec_()
+    
+    #adjusts szize of text boxs
     
     def UpdateModeOutput(self):
             self.ModeOutput.adjustSize()
