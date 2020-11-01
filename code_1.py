@@ -208,7 +208,9 @@ class Ui_LoginWindow(object):
     def AddUserClicked(self):
         
         self.UserCounter += 1
+        #uncomment next line to intilize file to contain the first row shown below
         #Array = [["Username","Password","LRL","URL","AA","APW","VA","VPW","VRP","ARP","PVARP"]]
+        
         #change screens
         username = self.UserName.text()
         password = self.Password.text()
