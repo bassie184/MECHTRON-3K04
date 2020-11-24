@@ -1,7 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import sys
+import serial
 
+from serial.tools import list_ports
+list_ports.comports()  # Outputs list of available serial ports
+
+ser = serial.Serial('/dev/ttyUSB0', 9600)
 
 #first window to allow user to login and add user
 #created by QT Designer to intilize labels, textboxes, and buttons
@@ -187,6 +192,14 @@ class Ui_LoginWindow(object):
                 return 1
         return 0
     
+    #check if username or password have spaces in them
+    
+    def ContainsSpace(self, s):
+        for i in range (len(s)):
+            if(s[i] == " "):
+                return 1
+        return 0
+    
     #code jumps to this function when 'Login' button is pressed
     
     def LoginClicked(self):
@@ -207,7 +220,6 @@ class Ui_LoginWindow(object):
     
     def AddUserClicked(self):
         
-        self.UserCounter += 1
         #uncomment next line to intilize file to contain the first row shown below
         #Array = [["Username","Password","LRL","URL","AA","APW","VA","VPW","VRP","ARP","PVARP"]]
         
@@ -215,23 +227,36 @@ class Ui_LoginWindow(object):
         username = self.UserName.text()
         password = self.Password.text()
         
-        #if user is new, adds username and password into the next row of array
-        if self.CheckNewUser(username) == 0:
-            if self.UserCounter <= 10:
-                #add username and password into array
-                Array = []
-                Array.append([username, password,"","","","","","","","",""])
-                #save array into file
-                self.FileWrite(Array)
-                #change screens
-                LoginWindow.hide()        
-                MainWindow.show()
+        #checks if username has invalid space
+        if self.ContainsSpace(username) == 0:
+            #checks if password has invalid space
+            if self.ContainsSpace(password) == 0:
+                #if user is new, adds username and password into the next row of array
+                if self.CheckNewUser(username) == 0:
+                    if self.UserCounter < 10:
+                        #increment counter for number of users
+                        self.UserCounter += 1
+                        #add username and password into array
+                        Array = []
+                        Array.append([username, password,"","","","","","","","",""])
+                        #save array into file
+                        self.FileWrite(Array)
+                        #change screens
+                        LoginWindow.hide()
+                        MainWindow.show()
+                    else:
+                        #shows error when user attemptes to add an 11th user
+                        self.AddUserPopUp()
+                else:
+                    #shows error when user name or password is not unique
+                    self.NotUniquePopUp()
             else:
-                #shows error when user attemptes to add an 11th user
-                self.AddUserPopUp()
+                #error for when password has invalid space in it
+                self.PasswordSpacePopUp()
         else:
-            #shows error when user name or password is not unique
-            self.NotUniquePopUp()
+            #error for when username has invalid space in it
+            self.UsernameSpacePopup()
+            
             
     #error mesaages
     
@@ -265,6 +290,25 @@ class Ui_LoginWindow(object):
 
         x = msg.exec_()
 
+    def PasswordSpacePopUp(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Error for Invalid Password")
+        msg.setText("Sorry, Invalid Space Character.")
+        msg.setIcon(QMessageBox.Critical)
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.setInformativeText("Please Enter User Info With No Space.")
+
+        x = msg.exec_()
+
+    def UsernameSpacePopup(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Error for Invalid Username")
+        msg.setText("Sorry, Invalid Space Character.")
+        msg.setIcon(QMessageBox.Critical)
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.setInformativeText("Please Enter User Info With No Space.")
+
+        x = msg.exec_()
 
 
 #Second window for editing variables and modes after login screen
