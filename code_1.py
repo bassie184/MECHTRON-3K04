@@ -4,9 +4,10 @@ import sys
 import serial
 
 from serial.tools import list_ports
+
 list_ports.comports()  # Outputs list of available serial ports
 
-ser = serial.Serial('/dev/ttyUSB0', 9600)
+ser = serial.Serial('COM5', 115200, timeout=1)
 
 #first window to allow user to login and add user
 #created by QT Designer to intilize labels, textboxes, and buttons
