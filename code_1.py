@@ -5,6 +5,8 @@ import serial
 
 from serial.tools import list_ports
 
+import time
+
 list_ports.comports()  # Outputs list of available serial ports
 
 ser = serial.Serial('COM5', 115200, timeout=1)
@@ -148,17 +150,17 @@ class Ui_LoginWindow(object):
 
     def GetFile(self):
         f=open("guru.txt", "r")
-        GetArrray = [["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""]]
+        GetArrray = [["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""]]
 
         for i in range (len(GetArrray)):
             read = f.readline()
@@ -179,8 +181,8 @@ class Ui_LoginWindow(object):
         Array = self.GetFile()
 
         for i in range (len(Array)):
-            if (Array [i][0]== u1):
-                if(Array [i][1]==p1):
+            if (Array [i][0] == u1):
+                if(Array [i][1] == p1):
                     return 1
         return 0
 
@@ -239,7 +241,7 @@ class Ui_LoginWindow(object):
                         self.UserCounter += 1
                         #add username and password into array
                         Array = []
-                        Array.append([username, password,"","","","","","","","","","","","","","","","","","",""])
+                        Array.append([username, password,"","","","","","","","","","","","","","","","","","","","","",""])
                         #save array into file
                         self.FileWrite(Array)
                         #change screens
@@ -321,7 +323,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         #sets up shape of window
 
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(670, 600)
+        MainWindow.resize(630, 620)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
@@ -512,7 +514,6 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.VAInput.setMinimum(0.1)
         self.VAInput.setMaximum(5.0)
         self.VAInput.setSingleStep(0.1)
-        self.VAInput.setStepType(QtWidgets.QAbstractSpinBox.DefaultStepType)
         self.VAInput.setProperty("value", 3.0)
         self.VAInput.setObjectName("VAInput")
         self.VPWInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
@@ -569,7 +570,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.VRPOutput.setObjectName("VRPOutput")
 
         self.line_7 = QtWidgets.QFrame(self.centralwidget)
-        self.line_7.setGeometry(QtCore.QRect(250, 80, 20, 441))
+        self.line_7.setGeometry(QtCore.QRect(250, 80, 20, 501))
         self.line_7.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_7.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_7.setObjectName("line_7")
@@ -709,7 +710,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.CurrentMode_2.setObjectName("CurrentMode_2")
 
         self.line_8 = QtWidgets.QFrame(self.centralwidget)
-        self.line_8.setGeometry(QtCore.QRect(20, 510, 591, 41))
+        self.line_8.setGeometry(QtCore.QRect(20, 570, 591, 41))
         self.line_8.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_8.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_8.setObjectName("line_8")
@@ -730,7 +731,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.Load.clicked.connect(self.LoadClicked)
 
         self.line_9 = QtWidgets.QFrame(self.centralwidget)
-        self.line_9.setGeometry(QtCore.QRect(600, 80, 20, 441))
+        self.line_9.setGeometry(QtCore.QRect(600, 80, 20, 501))
         self.line_9.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_9.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_9.setObjectName("line_9")
@@ -984,6 +985,69 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.MaxSensor.setFont(font)
         self.MaxSensor.setObjectName("MaxSensor")
 
+        self.PVARPExtensionInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.PVARPExtensionInput.setGeometry(QtCore.QRect(420, 550, 62, 22))
+        self.PVARPExtensionInput.setDecimals(0)
+        self.PVARPExtensionInput.setMinimum(150.0)
+        self.PVARPExtensionInput.setMaximum(500.0)
+        self.PVARPExtensionInput.setSingleStep(5.0)
+        self.PVARPExtensionInput.setProperty("value", 150.0)
+        self.PVARPExtensionInput.setObjectName("PVARPExtensionInput")
+
+        self.PVARPExtension = QtWidgets.QLabel(self.centralwidget)
+        self.PVARPExtension.setGeometry(QtCore.QRect(270, 550, 141, 16))
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.PVARPExtension.setFont(font)
+        self.PVARPExtension.setObjectName("PVARPExtension")
+
+        self.RateSmooth = QtWidgets.QLabel(self.centralwidget)
+        self.RateSmooth.setGeometry(QtCore.QRect(270, 510, 111, 16))
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.RateSmooth.setFont(font)
+        self.RateSmooth.setObjectName("RateSmooth")
+
+        self.PVARPOutput = QtWidgets.QLabel(self.centralwidget)
+        self.PVARPOutput.setGeometry(QtCore.QRect(520, 530, 81, 16))
+        self.PVARPOutput.setObjectName("PVARPOutput")
+
+        self.RateSmoothInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.RateSmoothInput.setGeometry(QtCore.QRect(420, 510, 62, 22))
+        self.RateSmoothInput.setDecimals(0)
+        self.RateSmoothInput.setMinimum(0.0)
+        self.RateSmoothInput.setMaximum(25.0)
+        self.RateSmoothInput.setSingleStep(1.0)
+        self.RateSmoothInput.setProperty("value", 0.0)
+        self.RateSmoothInput.setObjectName("RateSmoothInput")
+
+        self.RateSmoothOutput = QtWidgets.QLabel(self.centralwidget)
+        self.RateSmoothOutput.setGeometry(QtCore.QRect(520, 510, 81, 16))
+        self.RateSmoothOutput.setObjectName("RateSmoothOutput")
+
+        self.PVARPInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.PVARPInput.setGeometry(QtCore.QRect(420, 530, 62, 22))
+        self.PVARPInput.setDecimals(0)
+        self.PVARPInput.setMinimum(150.0)
+        self.PVARPInput.setMaximum(500.0)
+        self.PVARPInput.setSingleStep(5.0)
+        self.PVARPInput.setProperty("value", 150.0)
+        self.PVARPInput.setObjectName("PVARPInput")
+
+        self.PVARP = QtWidgets.QLabel(self.centralwidget)
+        self.PVARP.setGeometry(QtCore.QRect(270, 530, 111, 16))
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.PVARP.setFont(font)
+        self.PVARP.setObjectName("PVARP")
+
+        self.PVARPExtensionOutput = QtWidgets.QLabel(self.centralwidget)
+        self.PVARPExtensionOutput.setGeometry(QtCore.QRect(520, 550, 81, 16))
+        self.PVARPExtensionOutput.setObjectName("PVARPExtensionOutput")
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 671, 21))
@@ -1076,6 +1140,12 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.ActivityThreshold.setText(_translate("MainWindow", "Activity Threshold:"))
         self.MaxSensorOutput.setText(_translate("MainWindow", ""))
         self.MaxSensor.setText(_translate("MainWindow", "Max Sensor Rate (MSR):"))
+        self.PVARPExtension.setText(_translate("MainWindow", "PVARP Extension:"))
+        self.RateSmooth.setText(_translate("MainWindow", "Rate Smoothing:"))
+        self.PVARPOutput.setText(_translate("MainWindow", ""))
+        self.RateSmoothOutput.setText(_translate("MainWindow", ""))
+        self.PVARP.setText(_translate("MainWindow", "PVARP:"))
+        self.PVARPExtensionOutput.setText(_translate("MainWindow", ""))
 
     #updates ModeOutput box to say the code of each button when clicked
 
@@ -1132,6 +1202,7 @@ class Ui_MainWindow(Ui_LoginWindow):
     #states graph and continues to display real time
     def DisplayGraphClicked(self):
 
+
         print("hello world")
 
 
@@ -1139,17 +1210,17 @@ class Ui_MainWindow(Ui_LoginWindow):
 
     def GetFile(self):
         f=open("guru.txt", "r")
-        GetArrray = [["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""],
-                    ["","","","","","","","","","","","","","","","","","","","",""]]
+        GetArrray = [["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""],
+                    ["","","","","","","","","","","","","","","","","","","","","","","",""]]
 
         for i in range (len(GetArrray)):
             read = f.readline()
@@ -1170,6 +1241,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         Array = self.GetFile()
         for i in range (len(Array)):
             for j in range (len(Array[i])):
+            #for j in 23:
                 if (Array [i][j]== Password):
                     print(i)
                     return i
@@ -1188,14 +1260,16 @@ class Ui_MainWindow(Ui_LoginWindow):
 
     #checks if password and username are valid
 
-    def CheckPassword(self,u1,p1):
+    def CheckPassword(self, u1, p1):
         Array = self.GetFile()
-
-        for i in range (len(Array)):
-            for j in range (len(Array[i])):
-                if (Array [i][j]== u1):
-                    if(Array [i][j+1]==p1):
-                        return 1
+        if (u1 == ""):
+            return 0
+        if (p1 == ""):
+            return 0
+        for i in range(len(Array)):
+            if (Array [i][0] == u1):
+                if (Array [i][1] == p1):
+                    return 1
         return 0
 
     #returns row number of first empty row
@@ -1214,7 +1288,8 @@ class Ui_MainWindow(Ui_LoginWindow):
         EmptyRow = self.CheckEmpty(Array)
 
         for i in range (EmptyRow):
-            for j in range(len(Array)):
+            for j in range(len(Array[i])):
+            #hellofor j in 23:
                 f.write (Array[i][j] + " ")
             f.write ("\n")
 
@@ -1223,6 +1298,16 @@ class Ui_MainWindow(Ui_LoginWindow):
     #code jumps here when user clicks load
     #checks if username and passwrd is right and then saves parameters into file
     def LoadClicked(self):
+
+        UserPassword = self.GetPassword()
+        UserUsername = self.GetUsername()
+
+        #checks that password and username are valid
+        if (self.CheckPassword(UserUsername,UserPassword) == 0):
+            self.DataWrongPopUp()
+            return
+
+
         self.LRLOutput.setText(self.LRLInput.text())
         self.URLOutput.setText(self.URLInput.text())
         self.AAOutput.setText(self.AAInput.text())
@@ -1241,6 +1326,9 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.ResponseFactorOutput.setText(self.ResponseFactorInput.text())
         self.ActivityThresholdOutput.setText(self.ActivityThresholdInput.text())
         self.MaxSensorOutput.setText(self.MaxSensorInput.text())
+        self.RateSmoothOutput.setText(self.RateSmoothInput.text())
+        self.PVARPOutput.setText(self.PVARPInput.text())
+        self.PVARPExtensionOutput.setText(self.PVARPExtensionInput.text())
 
         lrl = self.LRLInput.text()
         url = self.URLInput.text()
@@ -1260,14 +1348,12 @@ class Ui_MainWindow(Ui_LoginWindow):
         response  =  self.ResponseFactorInput.text()
         activity  =  self.ActivityThresholdInput.text()
         ms  =  self.MaxSensorInput.text()
+        rsmoothz  =  self.RateSmoothInput.text()
+        pvarpz  =  self.PVARPInput.text()
+        extensionz  =  self.PVARPExtensionInput.text()
 
         Array = self.GetFile()
-        UserPassword = self.GetPassword()
-        UserUsername = self.GetUsername()
-        #checks that password and username are valid
-        if (self.CheckPassword(UserUsername,UserPassword) == 0):
-            self.DataWrongPopUp()
-            return
+
         self.DataSavedPopUp()
 
         PassLocation = self.PasswordLocation(UserPassword)
@@ -1290,20 +1376,25 @@ class Ui_MainWindow(Ui_LoginWindow):
         Array[PassLocation][17] = response
         Array[PassLocation][18] = activity
         Array[PassLocation][19] = ms
-        #Array[PassLocation][20] = "\n"
+        Array[PassLocation][20] = rsmoothz
+        Array[PassLocation][21] = pvarpz
+        Array[PassLocation][22] = extensionz
+        #Array[PassLocation][23] = "\n"
+
         #write everything back into file
         self.FileWrite(Array)
 
         #26 bytes being sent
         DataCheck = 26
+        mode = 69
 
-        ######## @elsa and Anthoney need to convert every variable to be right type and figure out the size of int
-        
+
         #send serial information
-        SerialArray = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,DataCheck]
+        SerialArray = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmoothz,pvarpz,extensionz,DataCheck]
 
         for i in SerialArray:
-                ser.write(bytes([i]))
+            #print(SerialArray)
+            #ser.write(bytes([i]))
         time.sleep(0.5)
 
     #error message when wrong password or username are entered
