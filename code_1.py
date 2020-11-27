@@ -1445,14 +1445,20 @@ class Ui_MainWindow(Ui_LoginWindow):
         SerialArray = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth,pvarp,extension,DataCheck]
         print(SerialArray)
 
-        ser.write(SerialArray)
+        #ser.write(SerialArray)
         print("test 1")
-        ser.write(SerialArray.encode())
+        print(type(SerialArray))
+
+        #SerialArray = SerialArray.encode()
+
         print("test 2")
+        print(type(SerialArray))
+
         for i in SerialArray:
-            ser.write(SerialArray[i])
-        print("test 3")
-        time.sleep(0.5)
+            ser.write(bytes([i]))
+            #ser.write(bytes([SerialArray[i]]))
+            print("test 3")
+            time.sleep(0.5)
 
     #error message when wrong password or username are entered
     def DataWrongPopUp(self):
