@@ -1,15 +1,16 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import sys
+import time
 import serial
 
 from serial.tools import list_ports
 
-import time
+
 
 list_ports.comports()  # Outputs list of available serial ports
 
-ser = serial.Serial('COM5', 115200, timeout = 1)
+ser = serial.Serial('COM5', 115200, timeout=1)
 
 #ser = serial.Serial('COM5', 115200)
 #first window to allow user to login and add user
@@ -177,13 +178,15 @@ class Ui_LoginWindow(object):
         return GetArrray
 
     #chekcs if username and password match eachother
-
     def CheckPassword(self, u1, p1):
         Array = self.GetFile()
-
-        for i in range (len(Array)):
+        if (u1 == ""):
+            return 0
+        if (p1 == ""):
+            return 0
+        for i in range(len(Array)):
             if (Array [i][0] == u1):
-                if(Array [i][1] == p1):
+                if (Array [i][1] == p1):
                     return 1
         return 0
 
@@ -1441,8 +1444,15 @@ class Ui_MainWindow(Ui_LoginWindow):
 
         mode = self.GetMode()
         mode = mode.encode()
+
+        ANatural = ""
+        ANatural = ANatural.encode()
+        VNatural = ""
+        VNatural = VNatural.encode()
+
+
         #send serial information
-        SerialArray = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth,pvarp,extension,DataCheck]
+        SerialArray = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth,pvarp,extension,DataCheck,ANatural,VNatural]
         print(SerialArray)
 
         #ser.write(SerialArray)
@@ -1455,10 +1465,11 @@ class Ui_MainWindow(Ui_LoginWindow):
         print(type(SerialArray))
 
         for i in SerialArray:
-            ser.write(bytes([i]))
+            ser.write(i)
+            #ser.write(bytes([i]))
             #ser.write(bytes([SerialArray[i]]))
             print("test 3")
-            time.sleep(0.5)
+            #time.sleep(0.5)
 
     #error message when wrong password or username are entered
     def DataWrongPopUp(self):
