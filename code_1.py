@@ -9,8 +9,9 @@ import time
 
 list_ports.comports()  # Outputs list of available serial ports
 
-ser = serial.Serial('COM5', 115200, timeout=1)
+ser = serial.Serial('COM5', 115200, timeout = 1)
 
+#ser = serial.Serial('COM5', 115200)
 #first window to allow user to login and add user
 #created by QT Designer to intilize labels, textboxes, and buttons
 
@@ -591,6 +592,15 @@ class Ui_MainWindow(Ui_LoginWindow):
 
         #mode input buttons
 
+        self.NO = QtWidgets.QPushButton(self.centralwidget)
+        self.NO.setGeometry(QtCore.QRect(80, 90, 120, 23))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.NO.setFont(font)
+        self.NO.setObjectName("NO")
+
+        self.NO.clicked.connect(self.NOClicked)
+
         self.AOO = QtWidgets.QPushButton(self.centralwidget)
         self.AOO.setGeometry(QtCore.QRect(20, 120, 75, 23))
         font = QtGui.QFont()
@@ -681,14 +691,14 @@ class Ui_MainWindow(Ui_LoginWindow):
 
         self.AAIR.clicked.connect(self.AAIRClicked)
 
-        self.VVIA = QtWidgets.QPushButton(self.centralwidget)
-        self.VVIA.setGeometry(QtCore.QRect(100, 210, 75, 23))
+        self.VVIR = QtWidgets.QPushButton(self.centralwidget)
+        self.VVIR.setGeometry(QtCore.QRect(100, 210, 75, 23))
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.VVIA.setFont(font)
-        self.VVIA.setObjectName("VVIA")
+        self.VVIR.setFont(font)
+        self.VVIR.setObjectName("VVIR")
 
-        self.VVIA.clicked.connect(self.VVIAClicked)
+        self.VVIR.clicked.connect(self.VVIRClicked)
 
         #Leave button switches pages to login menu & logs off user
 
@@ -1104,6 +1114,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.VRPOutput.setText(_translate("MainWindow", ""))
         self.DifferentPacemaker.setText(_translate("MainWindow", "A different Pacemaker is approached:"))
         self.DifferentPacemakerOutput.setText(_translate("MainWindow", "False"))
+        self.NO.setText(_translate("MainWindow", "NO MODE"))
         self.AOO.setText(_translate("MainWindow", "AOO"))
         self.VOO.setText(_translate("MainWindow", "VOO"))
         self.DOO.setText(_translate("MainWindow", "DOO"))
@@ -1114,7 +1125,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.DDDR.setText(_translate("MainWindow", "DDDR"))
         self.VOOR.setText(_translate("MainWindow", "VOOR"))
         self.AAIR.setText(_translate("MainWindow", "AAIR"))
-        self.VVIA.setText(_translate("MainWindow", "VVIA"))
+        self.VVIR.setText(_translate("MainWindow", "VVIR"))
         self.CurrentMode_2.setText(_translate("MainWindow", "Current Mode:"))
         self.Load.setText(_translate("MainWindow", "Load"))
         self.Current.setText(_translate("MainWindow", "Current:"))
@@ -1148,53 +1159,44 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.PVARPExtensionOutput.setText(_translate("MainWindow", ""))
 
     #updates ModeOutput box to say the code of each button when clicked
-
+    def NOClicked(self):
+        self.ModeOutput.setText("No Mode Selected")
+        self.UpdateModeOutput()
     def AOOClicked(self):
         self.ModeOutput.setText("AOO")
         self.UpdateModeOutput()
-
     def VOOClicked(self):
         self.ModeOutput.setText("VOO")
         self.UpdateModeOutput()
-
     def DOOClicked(self):
         self.ModeOutput.setText("DOO")
         self.UpdateModeOutput()
-
     def AAIClicked(self):
         self.ModeOutput.setText("AAI")
         self.UpdateModeOutput()
-
     def VVIClicked(self):
         self.ModeOutput.setText("VVI")
         self.UpdateModeOutput()
-
     def DOORClicked(self):
         self.ModeOutput.setText("DOOR")
         self.UpdateModeOutput()
-
     def AOORClicked(self):
         self.ModeOutput.setText("AOOR")
         self.UpdateModeOutput()
-
     def VOORClicked(self):
         self.ModeOutput.setText("VOOR")
         self.UpdateModeOutput()
-
     def DDDRClicked(self):
         self.ModeOutput.setText("DDDR")
         self.UpdateModeOutput()
-
     def AAIRClicked(self):
         self.ModeOutput.setText("AAIR")
         self.UpdateModeOutput()
-
-    def VVIAClicked(self):
-        self.ModeOutput.setText("VVIA")
+    def VVIRClicked(self):
+        self.ModeOutput.setText("VVIR")
         self.UpdateModeOutput()
 
     #logs of and switches pages
-
     def LeaveClicked(self):
         MainWindow.hide()
         LoginWindow.show()
@@ -1207,7 +1209,6 @@ class Ui_MainWindow(Ui_LoginWindow):
 
 
     #reads file and saves locally in array form
-
     def GetFile(self):
         f=open("guru.txt", "r")
         GetArrray = [["","","","","","","","","","","","","","","","","","","","","","","",""],
@@ -1295,6 +1296,33 @@ class Ui_MainWindow(Ui_LoginWindow):
 
         f.close()
 
+    def GetMode(self):
+        textmode = self.ModeOutput.text()
+        if (textmode == "No Mode Selected"):
+            return "0"
+        elif (textmode == "AOO"):
+            return "1"
+        elif (textmode == "VOO"):
+            return "2"
+        elif (textmode == "AAI"):
+            return "3"
+        elif (textmode == "VVI"):
+            return "4"
+        elif (textmode == "DOO"):
+            return "5"
+        elif (textmode == "AOOR"):
+            return "6"
+        elif (textmode == "VOOR"):
+            return "7"
+        elif (textmode == "AAIR"):
+            return "8"
+        elif (textmode == "VVIR"):
+            return "9"
+        elif (textmode == "DOOR"):
+            return "10"
+        elif (textmode == "DDDR"):
+            return "11"
+
     #code jumps here when user clicks load
     #checks if username and passwrd is right and then saves parameters into file
     def LoadClicked(self):
@@ -1348,9 +1376,9 @@ class Ui_MainWindow(Ui_LoginWindow):
         response  =  self.ResponseFactorInput.text()
         activity  =  self.ActivityThresholdInput.text()
         ms  =  self.MaxSensorInput.text()
-        rsmoothz  =  self.RateSmoothInput.text()
-        pvarpz  =  self.PVARPInput.text()
-        extensionz  =  self.PVARPExtensionInput.text()
+        rsmooth  =  self.RateSmoothInput.text()
+        pvarp  =  self.PVARPInput.text()
+        extension  =  self.PVARPExtensionInput.text()
 
         Array = self.GetFile()
 
@@ -1376,25 +1404,54 @@ class Ui_MainWindow(Ui_LoginWindow):
         Array[PassLocation][17] = response
         Array[PassLocation][18] = activity
         Array[PassLocation][19] = ms
-        Array[PassLocation][20] = rsmoothz
-        Array[PassLocation][21] = pvarpz
-        Array[PassLocation][22] = extensionz
+        Array[PassLocation][20] = rsmooth
+        Array[PassLocation][21] = pvarp
+        Array[PassLocation][22] = extension
         #Array[PassLocation][23] = "\n"
 
         #write everything back into file
         self.FileWrite(Array)
 
+        #encode variables into bytes
+        lrl = lrl.encode()
+        url = url.encode()
+        aa  =  aa.encode()
+        apw = apw.encode()
+        asense = asense.encode()
+        arp = arp.encode()
+        ath = ath.encode()
+        va  =  va.encode()
+        vpw = vpw.encode()
+        vsense = vsense.encode()
+        vrp = vrp.encode()
+        vth = vth.encode()
+        avd = avd.encode()
+        reaction = reaction.encode()
+        recovery = recovery.encode()
+        response = response.encode()
+        activity = activity.encode()
+        ms  =  ms.encode()
+        rsmooth = rsmooth.encode()
+        pvarp = pvarp.encode()
+        extension = extension.encode()
+
         #26 bytes being sent
-        DataCheck = 26
-        mode = 69
+        DataCheck = "23"
+        DataCheck = DataCheck.encode()
 
-
+        mode = self.GetMode()
+        mode = mode.encode()
         #send serial information
-        SerialArray = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmoothz,pvarpz,extensionz,DataCheck]
+        SerialArray = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth,pvarp,extension,DataCheck]
+        print(SerialArray)
 
+        ser.write(SerialArray)
+        print("test 1")
+        ser.write(SerialArray.encode())
+        print("test 2")
         for i in SerialArray:
-            #print(SerialArray)
-            #ser.write(bytes([i]))
+            ser.write(SerialArray[i])
+        print("test 3")
         time.sleep(0.5)
 
     #error message when wrong password or username are entered
