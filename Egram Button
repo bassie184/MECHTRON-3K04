@@ -1,0 +1,60 @@
+#Serial communication
+import serial
+import time
+
+def setup():
+    serial.begin(115200)
+
+def loop():
+    atr_signal_data = analogRead(A0) # in here goes pin for atr_signal
+    vent_signal_data = analogRead(A1) # in here goes pin for vent_signal
+    serial.println(atr_signal_data, vent_signal_data)
+
+def egram(self):
+    # command to bring control here when egram button pressed
+    #done
+
+    # when this function is called, something in stateflow is triggered to be sending natural signals from pins A0 and A1
+    # (from heartview) out, so that when serial.read is called, we are receiving the correct data (art and vent signal)
+    # every timestamp, stateflow will send a value (every second or something for 10s) = our 10 data points.
+    # we have to have a method to stop data streaming too
+
+    # requesting data values
+    ser = serial.Serial('COM6', baudrate=115200, timeout=1)
+
+    while 1:
+        data_pt = ser.readline().decode('ascii')
+        print(data_pt)
+
+    vent_egram = []
+    atr_egram = []
+    arr = []
+    for person in range(10):
+        arr.append('b\x01')
+        for parameter in range(22):
+            arr.append('b\x0f')
+        arr.append('b\x15')
+
+    for j in arr:
+        ser.write(j)
+
+    i = 1
+    while i:  # Reading Vent. and Atr. serial data
+
+    s = ser.read() # reads data from port from computer --> stateflow must be sending data from pacemaker shield (A0 and A1)
+    s = int.from_bytes(s, byteorder=sys.byteorder)
+    list_serialIn.append(s)
+
+    i += 1
+    if i > 22:
+        i = 0
+
+    time.sleep(0.5)
+
+
+
+    plt.xlabel('time')
+    plt.ylabel(')
+
+    plt.figure(1)
+    plt.subplot()
