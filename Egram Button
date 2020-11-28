@@ -1,6 +1,7 @@
 #Serial communication
 import serial
 import time
+import sys
 
 def setup():
     serial.begin(115200)
@@ -29,32 +30,43 @@ def egram(self):
     vent_egram = []
     atr_egram = []
     arr = []
+
+    # creating placeholder array with definite size for each parameter we are sending/receiving
     for person in range(10):
-        arr.append('b\x01')
+        arr.append('b\x01') #first byte det if you want to update values (0x55), or get eegram (0x22)
+        arr.append('b\x')
         for parameter in range(22):
             arr.append('b\x0f')
         arr.append('b\x15')
 
+    # sending current data to board
     for j in arr:
         ser.write(j)
 
     i = 1
     while i:  # Reading Vent. and Atr. serial data
 
-    s = ser.read() # reads data from port from computer --> stateflow must be sending data from pacemaker shield (A0 and A1)
-    s = int.from_bytes(s, byteorder=sys.byteorder)
-    list_serialIn.append(s)
+        s = ser.read() # reads data from port from computer --> stateflow must be sending data from pacemaker shield (A0 and A1)
+        s = int.from_bytes(s, byteorder=sys.byteorder)
+        serialArrayIn.append(s)
 
-    i += 1
-    if i > 22:
-        i = 0
+        i += 1
+        if i > 22:
+            i = 0
 
     time.sleep(0.5)
 
-
-
-    plt.xlabel('time')
-    plt.ylabel(')
+    vent_egram.append(serialArrayIn[24])
+    atr_egram.append(serialArrayIn[23])
 
     plt.figure(1)
-    plt.subplot()
+    plt.subplot(211)
+    plt.xlabel('time')
+    plt.ylabel("Vent. Egram")
+    plt.plot(vent_egram)
+
+    plt.subplot(212)
+    plt.ylabel("Atr. Egram")
+    plt.xlabel('time')
+    plt.plot(atr_egram)
+    plt.show()
