@@ -377,7 +377,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         #device communication output
 
         self.DeviceCommunicateOutput = QtWidgets.QLabel(self.centralwidget)
-        self.DeviceCommunicateOutput.setGeometry(QtCore.QRect(60, 420, 71, 21))
+        self.DeviceCommunicateOutput.setGeometry(QtCore.QRect(20, 420, 237, 21))
         self.DeviceCommunicateOutput.setObjectName("DeviceCommunicateOutput")
 
 
@@ -590,7 +590,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         #different pacemaker output
 
         self.DifferentPacemakerOutput = QtWidgets.QLabel(self.centralwidget)
-        self.DifferentPacemakerOutput.setGeometry(QtCore.QRect(60, 480, 71, 21))
+        self.DifferentPacemakerOutput.setGeometry(QtCore.QRect(20, 480, 235, 21))
         self.DifferentPacemakerOutput.setObjectName("DifferentPacemakerOutput")
 
         #mode input buttons
@@ -1207,8 +1207,61 @@ class Ui_MainWindow(Ui_LoginWindow):
     #states graph and continues to display real time
     def DisplayGraphClicked(self):
 
+        vent_egram = [1,2,3,4,5,6,7,8,9,10]
+        atr_egram  = [1,2,3,4,5,6,7,8,9,10]
 
-        print("hello world")
+        j = 1
+        while j:
+
+            SerialArrayInput = ['b\x22','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00']
+            #SerialArrayInput = ['b\x22',mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth]
+            #print(SerialArrayInput)
+            #ser.write(SerialArray)
+            #SerialArray = SerialArray.encode()
+            for i in SerialArrayInput:
+                ser.write(i)
+                #ser.write(bytes([i]))
+                #ser.write(bytes([SerialArray[i]]))
+                time.sleep(0.5)
+
+            time.sleep(0.5)
+
+            #SerialArrayOutput = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth,ANatural,VNatural]
+            SerialArrayEGRAM = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
+
+            i = 1
+            while i:  # Reading Vent. and Atr. serial data
+                s = ser.read() # reads data from port from computer --> stateflow must be sending data from pacemaker shield (A0 and A1)
+                s = int.from_bytes(s, byteorder=sys.byteorder)
+                SerialArrayEGRAM[i] = s
+
+                i = i + 1
+                if i > 22:
+                    i = 0
+
+            time.sleep(0.5)
+
+            atr_egram[j - 1]  = SerialArrayEGRAM[21]
+            vent_egram[j - 1] = SerialArrayEGRAM[22]
+
+
+            j = j + 1
+            if j > 10:
+                j = 0
+
+
+        plt.figure(1)
+        plt.subplot(211)
+        plt.xlabel('time')
+        plt.ylabel("Vent. Egram")
+        plt.plot(vent_egram)
+
+        plt.subplot(212)
+        plt.ylabel("Atr. Egram")
+        plt.xlabel('time')
+        plt.plot(atr_egram)
+        plt.show()
+
 
 
     #reads file and saves locally in array form
@@ -1385,8 +1438,6 @@ class Ui_MainWindow(Ui_LoginWindow):
 
         Array = self.GetFile()
 
-        self.DataSavedPopUp()
-
         PassLocation = self.PasswordLocation(UserPassword)
         #we edit array to add the new parameters on the same line as password in array
         Array[PassLocation][2] = lrl
@@ -1415,6 +1466,21 @@ class Ui_MainWindow(Ui_LoginWindow):
         #write everything back into file
         self.FileWrite(Array)
 
+
+
+        aa  =  int(aa) * 10
+
+        asense = int(asense) * 100
+
+        ath = int(ath) * 10
+
+        va  =  int(va) * 10
+
+        vsense = int(vsense) * 100
+
+        vth = int(vth) * 10
+
+
         #encode variables into bytes
         lrl = lrl.encode()
         url = url.encode()
@@ -1438,59 +1504,97 @@ class Ui_MainWindow(Ui_LoginWindow):
         pvarp = pvarp.encode()
         extension = extension.encode()
 
-        #26 bytes being sent
-        DataCheck = "23"
-        DataCheck = DataCheck.encode()
-
         mode = self.GetMode()
         mode = mode.encode()
 
-        ANatural = ""
-        ANatural = ANatural.encode()
-        VNatural = ""
-        VNatural = VNatural.encode()
-
-
         #send serial information
-        SerialArray = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth,pvarp,extension,DataCheck,ANatural,VNatural]
-        print(SerialArray)
+        SerialArrayInput = ['b\x55',mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth]
+        print(SerialArrayInput)
 
         #ser.write(SerialArray)
-        print("test 1")
-        print(type(SerialArray))
-
         #SerialArray = SerialArray.encode()
 
-        print("test 2")
-        print(type(SerialArray))
-
-        for i in SerialArray:
+        for i in SerialArrayInput:
             ser.write(i)
             #ser.write(bytes([i]))
             #ser.write(bytes([SerialArray[i]]))
-            print("test 3")
-            #time.sleep(0.5)
+
+            time.sleep(0.5)
+
+        time.sleep(0.5)
+
+
+        #SerialArrayOutput = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth,ANatural,VNatural]
+        SerialArrayOutput = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
+        i = 1
+        while i:
+            s = ser.read()
+            s = int.from_bytes(s, byteorder=sys.byteorder)
+
+            SerialArrayOutput[i] = s
+
+            i = i + 1
+            if i > 22:
+                i=0
+
+        #pacemaker approached function
+        DeviceNumber - str(PassLocation)
+        self.DifferentPacemakerOutput.setText("Pacemaker Device #" + DeviceNumber)
+
+
+
+        CommunicateTrue = 1
+        i = 1
+        while i:
+
+            if (SerialArrayInput[i] == SerialArrayOutput[i - 1]):
+                i = i + 1
+            else:
+                CommunicateTrue = 0
+                i = 30
+
+            if i > 22:
+                i=0
+
+
+        if (CommunicateTrue):
+            self.DeviceCommunicateOutput.setText("Input Values Consistent With PaceMaker Output")
+            self.DataSavedPopUp()
+        else:
+            self.DeviceCommunicateOutput.setText("Input Values Inconsistent with PaceMaker Output ")
+            self.SerialFailPopUp()
+
+
 
     #error message when wrong password or username are entered
     def DataWrongPopUp(self):
         msg = QMessageBox()
-        msg.setWindowTitle("Error for Invalid User or Password")
-        msg.setText("Sorry, Invalid Information Entered.")
+        msg.setWindowTitle("Invalid User or Password Error")
+        msg.setText("Sorry, Invalid Information Entered")
         msg.setIcon(QMessageBox.Critical)
         msg.setStandardButtons(QMessageBox.Ok)
-        msg.setInformativeText("Please Enter Valid User Info.")
+        msg.setInformativeText("Please Enter Valid User Info")
         x = msg.exec_()
 
     #message when password and username are right, and data saved in file
     def DataSavedPopUp(self):
         msg = QMessageBox()
         msg.setWindowTitle("WELCOME")
-        msg.setText("Data saved.")
+        msg.setText("Data saved")
         msg.setIcon(QMessageBox.Information)
         msg.setStandardButtons(QMessageBox.Ok)
-        msg.setInformativeText("file location 'guru.txt'.")
+        msg.setInformativeText("file location 'guru.txt'")
         x = msg.exec_()
 
+    #message when serial comunication fails
+    def SerialFailPopUp(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Serial Communication Error")
+        msg.setText("Data Not Sent")
+        msg.setIcon(QMessageBox.Information)
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.setInformativeText("Data Not Sent or Recieved")
+        x = msg.exec_()
     #adjusts szize of text boxs
     def UpdateModeOutput(self):
             self.ModeOutput.adjustSize()
