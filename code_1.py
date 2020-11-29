@@ -1233,7 +1233,7 @@ class Ui_MainWindow(Ui_LoginWindow):
             while i:  # Reading Vent. and Atr. serial data
                 s = ser.read() # reads data from port from computer --> stateflow must be sending data from pacemaker shield (A0 and A1)
                 s = int.from_bytes(s, byteorder=sys.byteorder)
-                SerialArrayEGRAM[i] = s
+                SerialArrayEGRAM[i - 1] = s
 
                 i = i + 1
                 if i > 22:
@@ -1468,18 +1468,31 @@ class Ui_MainWindow(Ui_LoginWindow):
 
 
 
-        aa  =  int(aa) * 10
+        aa  =  float(aa) * 10
+        aa = str(aa)
+        aa = aa[:-2]
 
-        asense = int(asense) * 100
+        asense = float(asense) * 10
+        asense = str(asense)
+        asense = asense[:-2]
 
-        ath = int(ath) * 10
+        ath = float(ath) * 100
+        ath = str(ath)
+        ath = ath[:-2]
 
-        va  =  int(va) * 10
+        va  =  float(va) * 10
+        va = str(va)
+        va = va[:-2]
 
-        vsense = int(vsense) * 100
+        vsense = float(vsense) * 10
+        vsense = str(vsense)
+        vsense = vsense[:-2]
 
-        vth = int(vth) * 10
+        vth = float(vth) * 100
+        vth = str(vth)
+        vth = vth[:-2]
 
+        activity = activity[:-2]
 
         #encode variables into bytes
         lrl = lrl.encode()
@@ -1518,7 +1531,6 @@ class Ui_MainWindow(Ui_LoginWindow):
             ser.write(i)
             #ser.write(bytes([i]))
             #ser.write(bytes([SerialArray[i]]))
-
             time.sleep(0.5)
 
         time.sleep(0.5)
@@ -1531,14 +1543,14 @@ class Ui_MainWindow(Ui_LoginWindow):
             s = ser.read()
             s = int.from_bytes(s, byteorder=sys.byteorder)
 
-            SerialArrayOutput[i] = s
+            SerialArrayOutput[i - 1] = s
 
             i = i + 1
             if i > 22:
                 i=0
 
         #pacemaker approached function
-        DeviceNumber - str(PassLocation)
+        DeviceNumber = str(PassLocation)
         self.DifferentPacemakerOutput.setText("Pacemaker Device #" + DeviceNumber)
 
 
@@ -1557,7 +1569,7 @@ class Ui_MainWindow(Ui_LoginWindow):
                 i=0
 
 
-        if (CommunicateTrue):
+        if (CommunicateTrue == 1):
             self.DeviceCommunicateOutput.setText("Input Values Consistent With PaceMaker Output")
             self.DataSavedPopUp()
         else:
