@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMessageBox
 import sys
 import time
 import serial
-
+#import matplotlib as plt
 from serial.tools import list_ports
 
 
@@ -773,48 +773,42 @@ class Ui_MainWindow(Ui_LoginWindow):
         #self.line_12.setFrameShadow(QtWidgets.QFrame.Sunken)
         #self.line_12.setObjectName("line_12")
 
-
-        self.AS = QtWidgets.QLabel(self.centralwidget)
-        self.AS.setGeometry(QtCore.QRect(270, 210, 111, 16))
-        font = QtGui.QFont()
-        font.setBold(True)
-        font.setWeight(75)
-        self.AS.setFont(font)
-        self.AS.setObjectName("AS")
-
-        self.ASOutput = QtWidgets.QLabel(self.centralwidget)
-        self.ASOutput.setGeometry(QtCore.QRect(520, 210, 81, 16))
-        self.ASOutput.setObjectName("ASOutput")
-
-        self.ASInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
-        self.ASInput.setGeometry(QtCore.QRect(420, 210, 62, 22))
-        self.ASInput.setDecimals(1)
-        self.ASInput.setMinimum(0.0)
-        self.ASInput.setMaximum(5.0)
-        self.ASInput.setSingleStep(0.1)
-        self.ASInput.setProperty("value", 0.0)
-        self.ASInput.setObjectName("ASInput")
-
-        self.VS = QtWidgets.QLabel(self.centralwidget)
-        self.VS.setGeometry(QtCore.QRect(270, 320, 141, 16))
-        font = QtGui.QFont()
-        font.setBold(True)
-        font.setWeight(75)
-        self.VS.setFont(font)
-        self.VS.setObjectName("VS")
-
-        self.VSOutput = QtWidgets.QLabel(self.centralwidget)
-        self.VSOutput.setGeometry(QtCore.QRect(520, 320, 81, 16))
-        self.VSOutput.setObjectName("VSOutput")
-
-        self.VSInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
-        self.VSInput.setGeometry(QtCore.QRect(420, 320, 62, 22))
-        self.VSInput.setDecimals(1)
-        self.VSInput.setMinimum(0.0)
-        self.VSInput.setMaximum(5.0)
-        self.VSInput.setSingleStep(0.1)
-        self.VSInput.setProperty("value", 0.0)
-        self.VSInput.setObjectName("VSInput")
+        #self.AS = QtWidgets.QLabel(self.centralwidget)
+        #self.AS.setGeometry(QtCore.QRect(270, 210, 111, 16))
+        #font = QtGui.QFont()
+        #font.setBold(True)
+        #font.setWeight(75)
+        #self.AS.setFont(font)
+        #self.AS.setObjectName("AS")
+        #self.ASOutput = QtWidgets.QLabel(self.centralwidget)
+        #self.ASOutput.setGeometry(QtCore.QRect(520, 210, 81, 16))
+        #self.ASOutput.setObjectName("ASOutput")
+        #self.ASInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        #self.ASInput.setGeometry(QtCore.QRect(420, 210, 62, 22))
+        #self.ASInput.setDecimals(1)
+        #self.ASInput.setMinimum(0.0)
+        #self.ASInput.setMaximum(5.0)
+        #self.ASInput.setSingleStep(0.1)
+        #self.ASInput.setProperty("value", 0.0)
+        #self.ASInput.setObjectName("ASInput")
+        #self.VS = QtWidgets.QLabel(self.centralwidget)
+        #self.VS.setGeometry(QtCore.QRect(270, 320, 141, 16))
+        #font = QtGui.QFont()
+        #font.setBold(True)
+        #font.setWeight(75)
+        #self.VS.setFont(font)
+        #self.VS.setObjectName("VS")
+        #self.VSOutput = QtWidgets.QLabel(self.centralwidget)
+        #self.VSOutput.setGeometry(QtCore.QRect(520, 320, 81, 16))
+        #self.VSOutput.setObjectName("VSOutput")
+        #self.VSInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        #self.VSInput.setGeometry(QtCore.QRect(420, 320, 62, 22))
+        #self.VSInput.setDecimals(1)
+        #self.VSInput.setMinimum(0.0)
+        #self.VSInput.setMaximum(5.0)
+        #self.VSInput.setSingleStep(0.1)
+        #self.VSInput.setProperty("value", 0.0)
+        #self.VSInput.setObjectName("VSInput")
 
         self.line_13 = QtWidgets.QFrame(self.centralwidget)
         self.line_13.setGeometry(QtCore.QRect(20, 280, 241, 21))
@@ -1133,10 +1127,10 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.Load.setText(_translate("MainWindow", "Load"))
         self.Current.setText(_translate("MainWindow", "Current:"))
         self.Leave.setText(_translate("MainWindow", "Leave"))
-        self.AS.setText(_translate("MainWindow", "Atrial Sensitivity:"))
-        self.ASOutput.setText(_translate("MainWindow", ""))
-        self.VS.setText(_translate("MainWindow", "Ventrical Sensitivity:"))
-        self.VSOutput.setText(_translate("MainWindow", ""))
+        #self.AS.setText(_translate("MainWindow", "Atrial Sensitivity:"))
+        #self.ASOutput.setText(_translate("MainWindow", ""))
+        #self.VS.setText(_translate("MainWindow", "Ventrical Sensitivity:"))
+        #self.VSOutput.setText(_translate("MainWindow", ""))
         self.DisplayGraph.setText(_translate("MainWindow", "Display Electrogram"))
         self.AThreshold.setText(_translate("MainWindow", "Atrial Sense Threshold:"))
         self.AThresholdOutput.setText(_translate("MainWindow", ""))
@@ -1212,37 +1206,54 @@ class Ui_MainWindow(Ui_LoginWindow):
 
         j = 1
         while j:
+            #SerialArrayInput = ['b\x22',mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth]
+            hello = "\x22"
+            hello = bytes(hello, 'utf-8')
+            world = "\x00"
+            world = bytes(world, 'utf-8')
 
-            SerialArrayInput = ['b\x22','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00','b\x00']
-            #SerialArrayInput = ['b\x22',mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth]
+            testarray = [22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            a = bytes(testarray)
+            ser.write(a)
+            print(a)
+
+            SerialArrayInput = [hello,world,world,world,world,world,world,world,world,world,world,world,world,world,world,world,world,world,world]
+            #SerialArrayInput = [b'\x22',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            #SerialArrayInput = [b'\x22',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00','b\x00','b\x00',b'\x00']
             #print(SerialArrayInput)
-            #ser.write(SerialArray)
-            #SerialArray = SerialArray.encode()
+            #print(SerialArrayInput)
+            #ser.write(SerialArrayInput)
+
             for i in SerialArrayInput:
-                ser.write(i)
+                #ser.write(i)
                 #ser.write(bytes([i]))
-                #ser.write(bytes([SerialArray[i]]))
+                #ser.write(bytes([SerialArrayInput[i]]))
+
+                print("hellooo")
+
                 time.sleep(0.5)
 
             time.sleep(0.5)
 
-            #SerialArrayOutput = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth,ANatural,VNatural]
-            SerialArrayEGRAM = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
-
+            #SerialArrayOutput = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth,ANatural,VNatural,PacemakerPin]
+            SerialArrayOutput = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
             i = 1
-            while i:  # Reading Vent. and Atr. serial data
-                s = ser.read() # reads data from port from computer --> stateflow must be sending data from pacemaker shield (A0 and A1)
+            while i:
+                s = ser.read()
+                print(s)
+                print("yoohoo")
                 s = int.from_bytes(s, byteorder=sys.byteorder)
+                print("world")
                 SerialArrayEGRAM[i - 1] = s
 
                 i = i + 1
-                if i > 22:
-                    i = 0
-
+                if i > 21:
+                    i=0
+            print("for loop")
             time.sleep(0.5)
 
-            atr_egram[j - 1]  = SerialArrayEGRAM[21]
-            vent_egram[j - 1] = SerialArrayEGRAM[22]
+            atr_egram[j - 1]  = SerialArrayEGRAM[18]
+            vent_egram[j - 1] = SerialArrayEGRAM[19]
 
 
             j = j + 1
@@ -1250,17 +1261,17 @@ class Ui_MainWindow(Ui_LoginWindow):
                 j = 0
 
 
-        plt.figure(1)
-        plt.subplot(211)
-        plt.xlabel('time')
-        plt.ylabel("Vent. Egram")
-        plt.plot(vent_egram)
+        #plt.figure(1)
+        #plt.subplot(211)
+        #plt.xlabel('time')
+        #plt.ylabel("Vent. Egram")
+        #plt.plot(vent_egram)
 
-        plt.subplot(212)
-        plt.ylabel("Atr. Egram")
-        plt.xlabel('time')
-        plt.plot(atr_egram)
-        plt.show()
+        #plt.subplot(212)
+        #plt.ylabel("Atr. Egram")
+        #plt.xlabel('time')
+        #plt.plot(atr_egram)
+        #plt.show()
 
 
 
@@ -1396,12 +1407,12 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.URLOutput.setText(self.URLInput.text())
         self.AAOutput.setText(self.AAInput.text())
         self.APWOutput.setText(self.APWInput.text())
-        self.ASOutput.setText(self.ASInput.text())
+        #self.ASOutput.setText(self.ASInput.text())
         self.ARPOutput.setText(self.ARPInput.text())
         self.AThresholdOutput.setText(self.AThresholdInput.text())
         self.VAOutput.setText(self.VAInput.text())
         self.VPWOutput.setText(self.VPWInput.text())
-        self.VSOutput.setText(self.VSInput.text())
+        #self.VSOutput.setText(self.VSInput.text())
         self.VRPOutput.setText(self.VRPInput.text())
         self.VThresholdOutput.setText(self.VThresholdInput.text())
         self.AVDelayOutput.setText(self.AVDelayInput.text())
@@ -1418,12 +1429,12 @@ class Ui_MainWindow(Ui_LoginWindow):
         url = self.URLInput.text()
         aa  =  self.AAInput.text()
         apw = self.APWInput.text()
-        asense  =  self.ASInput.text()
+        #asense  =  self.ASInput.text()
         arp = self.ARPInput.text()
         ath = self.AThresholdInput.text()
         va  =  self.VAInput.text()
         vpw = self.VPWInput.text()
-        vsense  =  self.VSInput.text()
+        #vsense  =  self.VSInput.text()
         vrp = self.VRPInput.text()
         vth = self.VThresholdInput.text()
         avd  =  self.AVDelayInput.text()
@@ -1444,23 +1455,23 @@ class Ui_MainWindow(Ui_LoginWindow):
         Array[PassLocation][3] = url
         Array[PassLocation][4] = aa
         Array[PassLocation][5] = apw
-        Array[PassLocation][6] = asense
-        Array[PassLocation][7] = arp
-        Array[PassLocation][8] = ath
-        Array[PassLocation][9] = va
-        Array[PassLocation][10] = vpw
-        Array[PassLocation][11] = vsense
-        Array[PassLocation][12] = vrp
-        Array[PassLocation][13] = vth
-        Array[PassLocation][14] = avd
-        Array[PassLocation][15] = reaction
-        Array[PassLocation][16] = recovery
-        Array[PassLocation][17] = response
-        Array[PassLocation][18] = activity
-        Array[PassLocation][19] = ms
-        Array[PassLocation][20] = rsmooth
-        Array[PassLocation][21] = pvarp
-        Array[PassLocation][22] = extension
+        #Array[PassLocation][6] = asense
+        Array[PassLocation][6] = arp
+        Array[PassLocation][7] = ath
+        Array[PassLocation][8] = va
+        Array[PassLocation][9] = vpw
+        #Array[PassLocation][11] = vsense
+        Array[PassLocation][10] = vrp
+        Array[PassLocation][11] = vth
+        Array[PassLocation][12] = avd
+        Array[PassLocation][13] = reaction
+        Array[PassLocation][14] = recovery
+        Array[PassLocation][15] = response
+        Array[PassLocation][16] = activity
+        Array[PassLocation][17] = ms
+        Array[PassLocation][18] = rsmooth
+        Array[PassLocation][19] = pvarp
+        Array[PassLocation][20] = extension
         #Array[PassLocation][23] = "\n"
 
         #write everything back into file
@@ -1472,9 +1483,9 @@ class Ui_MainWindow(Ui_LoginWindow):
         aa = str(aa)
         aa = aa[:-2]
 
-        asense = float(asense) * 10
-        asense = str(asense)
-        asense = asense[:-2]
+        #asense = float(asense) * 10
+        #asense = str(asense)
+        #asense = asense[:-2]
 
         ath = float(ath) * 100
         ath = str(ath)
@@ -1484,9 +1495,9 @@ class Ui_MainWindow(Ui_LoginWindow):
         va = str(va)
         va = va[:-2]
 
-        vsense = float(vsense) * 10
-        vsense = str(vsense)
-        vsense = vsense[:-2]
+        #vsense = float(vsense) * 10
+        #vsense = str(vsense)
+        #vsense = vsense[:-2]
 
         vth = float(vth) * 100
         vth = str(vth)
@@ -1499,12 +1510,12 @@ class Ui_MainWindow(Ui_LoginWindow):
         url = url.encode()
         aa  =  aa.encode()
         apw = apw.encode()
-        asense = asense.encode()
+        #asense = asense.encode()
         arp = arp.encode()
         ath = ath.encode()
         va  =  va.encode()
         vpw = vpw.encode()
-        vsense = vsense.encode()
+        #vsense = vsense.encode()
         vrp = vrp.encode()
         vth = vth.encode()
         avd = avd.encode()
@@ -1521,7 +1532,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         mode = mode.encode()
 
         #send serial information
-        SerialArrayInput = ['b\x55',mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth]
+        SerialArrayInput = ['b\x55',mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth]
         print(SerialArrayInput)
 
         #ser.write(SerialArray)
@@ -1530,14 +1541,14 @@ class Ui_MainWindow(Ui_LoginWindow):
         for i in SerialArrayInput:
             ser.write(i)
             #ser.write(bytes([i]))
-            #ser.write(bytes([SerialArray[i]]))
+            ser.write(bytes([SerialArrayInput[i]]))
             time.sleep(0.5)
 
         time.sleep(0.5)
 
 
-        #SerialArrayOutput = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,asense,vsense,avd,reaction,recovery,response,activity,ms,rsmooth,ANatural,VNatural]
-        SerialArrayOutput = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
+        #SerialArrayOutput = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth,ANatural,VNatural,PacemakerPin]
+        SerialArrayOutput = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
         i = 1
         while i:
             s = ser.read()
@@ -1546,14 +1557,12 @@ class Ui_MainWindow(Ui_LoginWindow):
             SerialArrayOutput[i - 1] = s
 
             i = i + 1
-            if i > 22:
+            if i > 21:
                 i=0
 
         #pacemaker approached function
-        DeviceNumber = str(PassLocation)
-        self.DifferentPacemakerOutput.setText("Pacemaker Device #" + DeviceNumber)
-
-
+        DeviceNumber = str(SerialArrayOutput[20])
+        self.DifferentPacemakerOutput.setText("Pacemaker Pin #" + DeviceNumber)
 
         CommunicateTrue = 1
         i = 1
@@ -1565,8 +1574,8 @@ class Ui_MainWindow(Ui_LoginWindow):
                 CommunicateTrue = 0
                 i = 30
 
-            if i > 22:
-                i=0
+            if i > 18:
+                i = 0
 
 
         if (CommunicateTrue == 1):
