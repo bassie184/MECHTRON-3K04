@@ -3,16 +3,19 @@ from PyQt5.QtWidgets import QMessageBox
 import sys
 import time
 import serial
-#import matplotlib as plt
+import struct
+
+import matplotlib as plt
+
 from serial.tools import list_ports
 
 
 
 list_ports.comports()  # Outputs list of available serial ports
 
-ser = serial.Serial('COM5', 115200, timeout=1)
-
+ser = serial.Serial('COM5', 115200, timeout=5)
 #ser = serial.Serial('COM5', 115200)
+
 #first window to allow user to login and add user
 #created by QT Designer to intilize labels, textboxes, and buttons
 
@@ -1212,7 +1215,9 @@ class Ui_MainWindow(Ui_LoginWindow):
             world = "\x00"
             world = bytes(world, 'utf-8')
 
-            testarray = [22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            testarray = [0x22,0,0,0,0,0,0 ,0,0,0,0,0,0,0,0,0,0 ,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0]
+            #struct.pack('<BHHHHffHHHHHHHBBHB', *testarray)
+            #a = bytearray(testarray)
             a = bytes(testarray)
             ser.write(a)
             print(a)
@@ -1224,54 +1229,62 @@ class Ui_MainWindow(Ui_LoginWindow):
             #print(SerialArrayInput)
             #ser.write(SerialArrayInput)
 
-            for i in SerialArrayInput:
+            #for i in SerialArrayInput:
                 #ser.write(i)
                 #ser.write(bytes([i]))
                 #ser.write(bytes([SerialArrayInput[i]]))
-
-                print("hellooo")
-
-                time.sleep(0.5)
-
+                #print("hellooo")
+                #time.sleep(0.5)
             time.sleep(0.5)
 
             #SerialArrayOutput = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth,ANatural,VNatural,PacemakerPin]
             SerialArrayOutput = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-            i = 1
-            while i:
-                s = ser.read()
-                print(s)
-                print("yoohoo")
-                s = int.from_bytes(s, byteorder=sys.byteorder)
-                print("world")
-                SerialArrayEGRAM[i - 1] = s
+            #B = byte
+            #f = single
+            #H = unit16
+            #d = double53
+            s = ser.read(53)
+            print(".......")
+            print(s)
+            SerialArrayOutput = struct.unpack('<BHHHHffHHHHHHHBBHBddB', s)
+            #struct.unpack('<BHHHHffHHHHHHHBBHBddB')
+            print(SerialArrayOutput)
 
-                i = i + 1
-                if i > 21:
-                    i=0
-            print("for loop")
+            #i = 1
+            #while i:
+            #    s = ser.read(20)
+            #    print(s)
+            #    print("yoohoo")
+            #    s = int.from_bytes(s, byteorder=sys.byteorder)
+            #    print("world")
+            #    SerialArrayEGRAM[i - 1] = s
+
+            #    i = i + 1
+            #    if i > 21:
+            #        i=0
             time.sleep(0.5)
 
-            atr_egram[j - 1]  = SerialArrayEGRAM[18]
-            vent_egram[j - 1] = SerialArrayEGRAM[19]
-
+            atr_egram[j - 1]  = SerialArrayOutput[18]
+            vent_egram[j - 1] = SerialArrayOutput[19]
+            print("hello")
 
             j = j + 1
             if j > 10:
                 j = 0
 
+        print("test 2")
 
-        #plt.figure(1)
-        #plt.subplot(211)
-        #plt.xlabel('time')
-        #plt.ylabel("Vent. Egram")
-        #plt.plot(vent_egram)
+        plt.figure(1)
+        plt.subplot(211)
+        plt.xlabel('time')
+        plt.ylabel("Vent. Egram")
+        plt.plot(vent_egram)
 
-        #plt.subplot(212)
-        #plt.ylabel("Atr. Egram")
-        #plt.xlabel('time')
-        #plt.plot(atr_egram)
-        #plt.show()
+        plt.subplot(212)
+        plt.ylabel("Atr. Egram")
+        plt.xlabel('time')
+        plt.plot(atr_egram)
+        plt.show()
 
 
 
@@ -1482,31 +1495,54 @@ class Ui_MainWindow(Ui_LoginWindow):
         aa  =  float(aa) * 10
         aa = str(aa)
         aa = aa[:-2]
+        aa = int(aa)
 
         #asense = float(asense) * 10
         #asense = str(asense)
         #asense = asense[:-2]
 
-        ath = float(ath) * 100
+        ath = float(ath) * 1000
         ath = str(ath)
         ath = ath[:-2]
+        ath = int(ath)
 
         va  =  float(va) * 10
         va = str(va)
         va = va[:-2]
+        va = int(va)
 
         #vsense = float(vsense) * 10
         #vsense = str(vsense)
         #vsense = vsense[:-2]
 
-        vth = float(vth) * 100
+        vth = float(vth) * 1000
         vth = str(vth)
         vth = vth[:-2]
+        vth = int(vth)
 
         activity = activity[:-2]
 
+
         #encode variables into bytes
-        lrl = lrl.encode()
+        lrl = int(lrl)
+        url = int(url)
+        aa = int(aa)
+        apw = int(apw)
+        arp = int(arp)
+        ath = int(ath)
+        va = int(va)
+        vpw = int(vpw)
+        vrp = int(vrp)
+        vth = int(vth)
+        avd = int(avd)
+        reaction = int(reaction)
+        recovery = int(recovery)
+        response = int(response)
+        activity = int(activity)
+        ms = int(ms)
+        rsmooth = int(rsmooth)
+
+        """
         url = url.encode()
         aa  =  aa.encode()
         apw = apw.encode()
@@ -1527,38 +1563,36 @@ class Ui_MainWindow(Ui_LoginWindow):
         rsmooth = rsmooth.encode()
         pvarp = pvarp.encode()
         extension = extension.encode()
-
+        """
         mode = self.GetMode()
         mode = mode.encode()
+        mode = int(mode)
 
         #send serial information
-        SerialArrayInput = ['b\x55',mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth]
+        SerialArrayInputBefore = [0x00,mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth]
+
+        SerialArrayInput = struct.pack('<BBHHHHffHHHHHHHBBHB', *SerialArrayInputBefore)
+
         print(SerialArrayInput)
 
-        #ser.write(SerialArray)
-        #SerialArray = SerialArray.encode()
-
-        for i in SerialArrayInput:
-            ser.write(i)
-            #ser.write(bytes([i]))
-            ser.write(bytes([SerialArrayInput[i]]))
-            time.sleep(0.5)
+        ser.write(SerialArrayInput)
 
         time.sleep(0.5)
 
-
         #SerialArrayOutput = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth,ANatural,VNatural,PacemakerPin]
         SerialArrayOutput = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-        i = 1
-        while i:
-            s = ser.read()
-            s = int.from_bytes(s, byteorder=sys.byteorder)
+        #B = byte
+        #f = single
+        #H = unit16
+        #d = double53
+        s = ser.read(53)
+        print(".......")
+        print(s)
+        SerialArrayOutput = struct.unpack('<BHHHHffHHHHHHHBBHBddB', s)
+        #struct.unpack('<BHHHHffHHHHHHHBBHBddB')
+        print(SerialArrayOutput)
 
-            SerialArrayOutput[i - 1] = s
 
-            i = i + 1
-            if i > 21:
-                i=0
 
         #pacemaker approached function
         DeviceNumber = str(SerialArrayOutput[20])
@@ -1568,7 +1602,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         i = 1
         while i:
 
-            if (SerialArrayInput[i] == SerialArrayOutput[i - 1]):
+            if (SerialArrayInputBefore[i] == SerialArrayOutput[i - 1]):
                 i = i + 1
             else:
                 CommunicateTrue = 0
@@ -1584,6 +1618,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         else:
             self.DeviceCommunicateOutput.setText("Input Values Inconsistent with PaceMaker Output ")
             self.SerialFailPopUp()
+
 
 
 
