@@ -4,8 +4,8 @@ import sys
 import time
 import serial
 import struct
-
-import matplotlib as plt
+import numpy as np
+import matplotlib.pyplot as plt
 
 from serial.tools import list_ports
 
@@ -828,7 +828,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.DisplayGraph.clicked.connect(self.DisplayGraphClicked)
 
         self.AThreshold = QtWidgets.QLabel(self.centralwidget)
-        self.AThreshold.setGeometry(QtCore.QRect(270, 250, 141, 16))
+        self.AThreshold.setGeometry(QtCore.QRect(270, 210, 141, 16))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -836,11 +836,11 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.AThreshold.setObjectName("AThreshold")
 
         self.AThresholdOutput = QtWidgets.QLabel(self.centralwidget)
-        self.AThresholdOutput.setGeometry(QtCore.QRect(520, 250, 81, 16))
+        self.AThresholdOutput.setGeometry(QtCore.QRect(520, 210, 81, 16))
         self.AThresholdOutput.setObjectName("AThresholdOutput")
 
         self.AThresholdInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
-        self.AThresholdInput.setGeometry(QtCore.QRect(420, 250, 62, 22))
+        self.AThresholdInput.setGeometry(QtCore.QRect(420, 210, 62, 22))
         self.AThresholdInput.setDecimals(2)
         self.AThresholdInput.setMinimum(0.5)
         self.AThresholdInput.setMaximum(3.3)
@@ -849,7 +849,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.AThresholdInput.setObjectName("AThresholdInput")
 
         self.VThresholdInput = QtWidgets.QDoubleSpinBox(self.centralwidget)
-        self.VThresholdInput.setGeometry(QtCore.QRect(420, 360, 62, 22))
+        self.VThresholdInput.setGeometry(QtCore.QRect(420, 320, 62, 22))
         self.VThresholdInput.setDecimals(2)
         self.VThresholdInput.setMinimum(0.5)
         self.VThresholdInput.setMaximum(3.3)
@@ -858,7 +858,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.VThresholdInput.setObjectName("VThresholdInput")
 
         self.VThreshold = QtWidgets.QLabel(self.centralwidget)
-        self.VThreshold.setGeometry(QtCore.QRect(270, 360, 141, 16))
+        self.VThreshold.setGeometry(QtCore.QRect(270, 320, 141, 16))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -866,7 +866,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.VThreshold.setObjectName("VThreshold")
 
         self.VThresholdOutput = QtWidgets.QLabel(self.centralwidget)
-        self.VThresholdOutput.setGeometry(QtCore.QRect(520, 360, 81, 16))
+        self.VThresholdOutput.setGeometry(QtCore.QRect(520, 320, 81, 16))
         self.VThresholdOutput.setObjectName("VThresholdOutput")
 
         self.AVDelay = QtWidgets.QLabel(self.centralwidget)
@@ -1091,7 +1091,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.Welcome.setText(_translate("MainWindow", "Welcome to PaceMaker Pro: MAIN MENU"))
         self.LoginOutput.setText(_translate("MainWindow", ""))
         self.Mode.setText(_translate("MainWindow", "Mode:"))
-        self.DeviceCommunicate.setText(_translate("MainWindow", "DCM and Device comunitating:"))
+        self.DeviceCommunicate.setText(_translate("MainWindow", "DCM and Device Communicating:"))
         self.DeviceCommunicateOutput.setText(_translate("MainWindow", "False"))
         self.ModeOutput.setText(_translate("MainWindow", "No Mode Selected"))
         self.User.setText(_translate("MainWindow", "CURRENT USER:"))
@@ -1102,7 +1102,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.APW.setText(_translate("MainWindow", "Atrial Pules Width:"))
         self.VA.setText(_translate("MainWindow", "Ventricular Amplitude:"))
         self.VRP.setText(_translate("MainWindow", "VRP:"))
-        self.VPW.setText(_translate("MainWindow", "Ventrical Pulse Width:"))
+        self.VPW.setText(_translate("MainWindow", "Ventricular Pulse Width:"))
         self.ARP.setText(_translate("MainWindow", "ARP:"))
         self.LRLOutput.setText(_translate("MainWindow", ""))
         self.URLOutput.setText(_translate("MainWindow", ""))
@@ -1112,7 +1112,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         self.ARPOutput.setText(_translate("MainWindow", ""))
         self.VPWOutput.setText(_translate("MainWindow", ""))
         self.VRPOutput.setText(_translate("MainWindow", ""))
-        self.DifferentPacemaker.setText(_translate("MainWindow", "A different Pacemaker is approached:"))
+        self.DifferentPacemaker.setText(_translate("MainWindow", "A different pacemaker is connected:"))
         self.DifferentPacemakerOutput.setText(_translate("MainWindow", "False"))
         self.NO.setText(_translate("MainWindow", "NO MODE"))
         self.AOO.setText(_translate("MainWindow", "AOO"))
@@ -1203,89 +1203,79 @@ class Ui_MainWindow(Ui_LoginWindow):
 
     #states graph and continues to display real time
     def DisplayGraphClicked(self):
-
+        #array 10
         vent_egram = [1,2,3,4,5,6,7,8,9,10]
         atr_egram  = [1,2,3,4,5,6,7,8,9,10]
 
+        #array 100
+        vent_egram = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+        atr_egram = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+
+        #array 1100
+        '''vent_egram  =  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+
+        atr_egram   =  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,\
+                        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+        '''
         j = 1
         while j:
             #SerialArrayInput = ['b\x22',mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth]
-            hello = "\x22"
-            hello = bytes(hello, 'utf-8')
-            world = "\x00"
-            world = bytes(world, 'utf-8')
-
             testarray = [0x22,0,0,0,0,0,0 ,0,0,0,0,0,0,0,0,0,0 ,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0]
-            #struct.pack('<BHHHHffHHHHHHHBBHB', *testarray)
-            #a = bytearray(testarray)
+
             a = bytes(testarray)
             ser.write(a)
             print(a)
-
-            SerialArrayInput = [hello,world,world,world,world,world,world,world,world,world,world,world,world,world,world,world,world,world,world]
-            #SerialArrayInput = [b'\x22',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-            #SerialArrayInput = [b'\x22',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00',b'\x00','b\x00','b\x00',b'\x00']
-            #print(SerialArrayInput)
-            #print(SerialArrayInput)
-            #ser.write(SerialArrayInput)
-
-            #for i in SerialArrayInput:
-                #ser.write(i)
-                #ser.write(bytes([i]))
-                #ser.write(bytes([SerialArrayInput[i]]))
-                #print("hellooo")
-                #time.sleep(0.5)
-            time.sleep(0.5)
-
             #SerialArrayOutput = [mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth,ANatural,VNatural,PacemakerPin]
             SerialArrayOutput = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-            #B = byte
-            #f = single
-            #H = unit16
-            #d = double53
+
             s = ser.read(53)
             print(".......")
             print(s)
             SerialArrayOutput = struct.unpack('<BHHHHffHHHHHHHBBHBddB', s)
-            #struct.unpack('<BHHHHffHHHHHHHBBHBddB')
             print(SerialArrayOutput)
 
-            #i = 1
-            #while i:
-            #    s = ser.read(20)
-            #    print(s)
-            #    print("yoohoo")
-            #    s = int.from_bytes(s, byteorder=sys.byteorder)
-            #    print("world")
-            #    SerialArrayEGRAM[i - 1] = s
-
-            #    i = i + 1
-            #    if i > 21:
-            #        i=0
-            time.sleep(0.5)
+            time.sleep(0.01)
 
             atr_egram[j - 1]  = SerialArrayOutput[18]
             vent_egram[j - 1] = SerialArrayOutput[19]
-            print("hello")
-
+            print("---- - - -- - - ----")
             j = j + 1
-            if j > 10:
+            if j > 100:         #change for size of array
                 j = 0
 
-        print("test 2")
+        print("done reading")
+
 
         plt.figure(1)
         plt.subplot(211)
-        plt.xlabel('time')
         plt.ylabel("Vent. Egram")
+        plt.title('Atrium and Ventricle Electrogram')
         plt.plot(vent_egram)
 
         plt.subplot(212)
         plt.ylabel("Atr. Egram")
-        plt.xlabel('time')
+        plt.xlabel('Time')
         plt.plot(atr_egram)
         plt.show()
-
 
 
     #reads file and saves locally in array form
@@ -1492,7 +1482,7 @@ class Ui_MainWindow(Ui_LoginWindow):
 
 
 
-        aa  =  float(aa) * 10
+        aa = float(aa) * 1000
         aa = str(aa)
         aa = aa[:-2]
         aa = int(aa)
@@ -1506,7 +1496,7 @@ class Ui_MainWindow(Ui_LoginWindow):
         ath = ath[:-2]
         ath = int(ath)
 
-        va  =  float(va) * 10
+        va = float(va) * 1000
         va = str(va)
         va = va[:-2]
         va = int(va)
@@ -1572,7 +1562,9 @@ class Ui_MainWindow(Ui_LoginWindow):
         SerialArrayInputBefore = [0x00,mode,lrl,url,aa,va,apw,vpw,ath,vth,arp,vrp,avd,reaction,recovery,response,activity,ms,rsmooth]
 
         SerialArrayInput = struct.pack('<BBHHHHffHHHHHHHBBHB', *SerialArrayInputBefore)
-
+        print("before")
+        print(SerialArrayInputBefore)
+        print("after")
         print(SerialArrayInput)
 
         ser.write(SerialArrayInput)
@@ -1584,7 +1576,8 @@ class Ui_MainWindow(Ui_LoginWindow):
         #B = byte
         #f = single
         #H = unit16
-        #d = double53
+        #d = double
+        #adds to 53
         s = ser.read(53)
         print(".......")
         print(s)
